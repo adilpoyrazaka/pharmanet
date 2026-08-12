@@ -81,6 +81,28 @@ Yer kaplamaz, izin süreci hafif, reddedilme eşiği düşük, depo temsilcisini
 Kaynak yapısı değiştiğinde geçmişi yeniden işleyebilmek ve "kaynakta böyleydi"
 diyebilmek için. *Opus.*
 
+**D29 — Ana tablo `facility` + `facility_type`, `pharmacy` değil.** KİLİT
+Karar D7 ile aynı yöne çıkıyor ama gerekçe farklı. D7'de genişleme kesindi
+(banka sandıkları pilot bölgede zaten var); burada genişleme park edilmiş bir
+opsiyon (PROJECT.md §15, sağlık zinciri). Kararı belirleyen olasılık değil maliyet
+asimetrisi: bugün `facility` demek bir kelime; sonradan `pharmacy`'den göç
+etmek tablo adı, tüm yabancı anahtarlar, index'ler, dbt modelleri, API yolları
+ve frontend tipleri demek — ve o göç tam da genişlemeye karar verdiğin, yani
+en meşgul olduğun anda gelir. Sıfır maliyetli sigorta düşük olasılıklı riske
+karşı da alınır.
+
+**Bağlayıcı şart — isim geniş, davranış dar.** `facility_type` v1'de tek
+değerlidir (`pharmacy`). Her sorgu, her dbt modeli ve her bileşik index
+`facility_type = 'pharmacy'` koşulunu **açıkça taşır**; "sorgu katmanı tek tip
+olduğunu varsayar" yeterli değildir. Gerekçe: ikinci tip tabloya girdiği gün
+filtresiz sorgular sessizce yanlış tesis döndürür. Bu bir tip hatası değil veri
+hatasıdır — derleyici yakalamaz, yalnızca test yakalar, test yoksa kullanıcı
+yakalar. Kullanıcıya yanlış tesis göstermek güven vaadinin öldüğü noktadır
+(§1), yani göçten kaçınmak için alınan sigorta tam da göçün geldiği anda
+patlamış olur. *Poi karar verdi, şart Opus, Poi onayladı.*
+
+*A5 bu kararla kapandı.*
+
 ---
 
 ## Ürün ve tasarım
@@ -160,28 +182,6 @@ değilken açılmak tek varlığımızı yakar. *Opus, Poi kabul etti.*
 
 **D28 — Devir teslim dosyayla, sohbetle değil.** KİLİT
 Spec dosyasında olmayan şey kodda olmaz. Dosya sahiplikleri PROJECT.md §10.
-
-**D29 — Ana tablo `facility` + `facility_type`, `pharmacy` değil.** KİLİT
-Karar D7 ile aynı yöne çıkıyor ama gerekçe farklı. D7'de genişleme kesindi
-(banka sandıkları pilot bölgede zaten var); burada genişleme park edilmiş bir
-opsiyon (§15, sağlık zinciri). Kararı belirleyen olasılık değil maliyet
-asimetrisi: bugün `facility` demek bir kelime; sonradan `pharmacy`'den göç
-etmek tablo adı, tüm yabancı anahtarlar, index'ler, dbt modelleri, API yolları
-ve frontend tipleri demek — ve o göç tam da genişlemeye karar verdiğin, yani
-en meşgul olduğun anda gelir. Sıfır maliyetli sigorta düşük olasılıklı riske
-karşı da alınır.
-
-**Bağlayıcı şart — isim geniş, davranış dar.** `facility_type` v1'de tek
-değerlidir (`pharmacy`). Her sorgu, her dbt modeli ve her bileşik index
-`facility_type = 'pharmacy'` koşulunu **açıkça taşır**; "sorgu katmanı tek tip
-olduğunu varsayar" yeterli değildir. Gerekçe: ikinci tip tabloya girdiği gün
-filtresiz sorgular sessizce yanlış tesis döndürür. Bu bir tip hatası değil veri
-hatasıdır — derleyici yakalamaz, yalnızca test yakalar, test yoksa kullanıcı
-yakalar. Kullanıcıya yanlış tesis göstermek güven vaadinin öldüğü noktadır
-(§1), yani göçten kaçınmak için alınan sigorta tam da göçün geldiği anda
-patlamış olur. *Poi karar verdi, şart Opus, Poi onayladı.*
-
-*A5 bu kararla kapandı.*
 
 **D30 — Gemini araştırma görevleri `R1…R7`, `G` değil.** KİLİT
 `G1–G3` (`PROJECT.md` §2) kararı belirleyen üç gerçeğin etiketi ve öyle kalır.

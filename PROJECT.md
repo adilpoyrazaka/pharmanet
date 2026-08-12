@@ -38,6 +38,10 @@ hepsi Faz 0'da paralel olarak ölçülür — inşaatı durdurmazlar ama yönü 
 | G2 | Soranların kaçında gerçekten ilaç teminatı var? | Pazarın gerçek büyüklüğü bu | Poi'nin sektör içi ağı üzerinden |
 | G3 | Eczaneler için reklam yasağı ücretli öne çıkarmayı kapatıyor mu? | Tüketici tarafındaki en bariz gelir modelini öldürebilir | Eczacı odasına yazılı soru + bir avukata 1 saatlik danışma |
 
+> **Numaralandırma notu (D30):** `G1–G3` yalnızca bu üç gerçeğin etiketidir.
+> Gemini araştırma görevleri `R1…R7` ile numaralanır. Aynı harfi iki listede
+> kullanmak daha önce yanlış brief üretti.
+
 **G3 için ön not:** Türkiye'de eczaneler için reklam yasağı var ama "bilgilendirme"
 ile "reklam" arasında ayrım var. Nesnel bir dizin kaydı (bu eczane şu şirketle
 anlaşmalı) bilgilendirmeye yakın; **para karşılığı sıralama yükseltme** açık reklamdır.
@@ -188,6 +192,11 @@ Metin arama için `pg_trgm` yeterli, ayrı arama motoru gerekmez.
 Her yayın kaydında zorunlu alanlar: `source_url`, `snapshot_id`,
 `first_seen_at`, `last_verified_at`, `confidence`.
 
+**Ana tablo `facility`, ayrım `facility_type` (D29).** v1'de tek değerli
+(`pharmacy`). Bağlayıcı şart: her sorgu, her dbt modeli ve her bileşik index
+`facility_type = 'pharmacy'` koşulunu açıkça taşır — varsayıma bırakılmaz.
+Coğrafi sorguların bileşik index'i bu sütunla başlar.
+
 ### 6.4 Varlık eşleme — projenin teknik kalbi
 
 Sigorta listeleri eczaneyi ad + adres olarak verir; ortak bir kimlik numarası yok.
@@ -264,12 +273,14 @@ seferlik jeton yeter. Bu akış ancak platform görünür değere sahip olduğun
 
 **Terminoloji kararı: "sigorta şirketi" değil, "kurum".** Sahada eczanelerin
 anlaşması yalnızca özel sigorta şirketleriyle değil; banka sandıkları ve diğer
-kurum sağlık planları da aynı soruyu üretiyor. Şema ilk günden `kurum` varlığı
-üzerine kurulur, `kurum_tipi` alanıyla ayrılır. Sonradan genişletmek pahalıya patlar.
+kurum sağlık planları da aynı soruyu üretiyor. Şema ilk günden `institution`
+varlığı üzerine kurulur, `institution_type` alanıyla ayrılır. Sonradan
+genişletmek pahalıya patlar. (Adlandırma: D7 ek notu, 2026-08-12.)
 
 **Şema sonucu (şimdi kararlaştırılır, sonra değil):** her kayıt
-`verification_method` (scraped / phone / self_claimed / oda) ve `verified_at`
-taşır. `confidence` bu alandan türetilir. Arayüz en güçlü doğrulamayı gösterir.
+`verification_method` (`chamber` / `field` / `phone` / `self_claimed` /
+`scraped`) ve `verified_at` taşır. Bu beş değer kanoniktir — `field` K2 saha
+turunun çıktısıdır ve atlanamaz (D8 ek notu). `confidence` bu alandan türetilir. Arayüz en güçlü doğrulamayı gösterir.
 
 **Çelişki kuralı:** Şirketin yayınlanmış listesi "evet", eczane "hayır" diyorsa
 **eczanenin beyanı kazanır** — müşteriyi geri çevirecek olan o. Ama iki kayıt da
@@ -609,9 +620,11 @@ Doktor, hastane, laboratuvar ve görüntüleme düğümlerinin sisteme dahil edi
 Poi'nin kararıyla en sona, ayrı bakılacak alt kategori olarak bırakıldı.
 Odak: ürün kalitesi, veri doğruluğu, pazar analizi, stratejik eğilimler.
 
-**Park edilen ama kaydı tutulan sıfır maliyetli kanca:** ana tablonun `pharmacy`
-yerine `facility` + `facility_type` olarak adlandırılması. Genişleme hiç
-yapılmasa kayıp yok; yapılırsa göç yazmaktan kurtarır. Karar açık (A5).
+**Genişleme park edilse de adlandırma kancası karara bağlandı (D29,
+2026-08-12):** ana tablo `pharmacy` değil `facility` + `facility_type`.
+Genişleme hiç yapılmasa kayıp yok; yapılırsa göç yazmaktan kurtarır.
+`facility_type` v1'de tek değerli kalır ve filtre her sorguda açıkça yazılır.
+A5 kapandı.
 
 **Boyutlandırma** Gemini brief'ine devredildi: ilaç teminatlı poliçe sayısı,
 dizin sitelerinin trafik büyüklüğü, reçete hacmi.
