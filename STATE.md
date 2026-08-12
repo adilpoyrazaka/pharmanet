@@ -19,10 +19,9 @@ Faz 0 — Zemin. Henüz kod yazılmadı.
 - Gemini G-1…G-7 araştırması. **G-2 (kapsama oranı) öncelikli.**
 
 ## Sıradaki adımlar
-1. Repo kurulumu, `PROJECT.md` + `decisions.md` commit.
-2. Sosyal medya kullanıcı adlarının alınması (handle kapılma riski).
-3. `architecture.md` — Claude Code + Fable.
-4. Tek kurum için uçtan uca dikey dilim.
+1. Sosyal medya kullanıcı adlarının alınması (handle kapılma riski).
+2. `architecture.md` — Claude Code + Fable.
+3. Tek kurum için uçtan uca dikey dilim.
 
 ## Bloke olanlar
 - **Ana ekran tasarımı** → A1 (kapsama oranı) sonucunu bekliyor.
@@ -38,6 +37,5 @@ Faz 0 — Zemin. Henüz kod yazılmadı.
 - **A5** Ana tablo adı: `pharmacy` mi `facility` + `facility_type` mi — karar bekliyor
 
 ## Henüz yapılmamış / risk
-- Repo yok → tek kalıcı kopya indirilen dosyalar.
 - Sosyal medya kullanıcı adları alınmadı.
 - Alan adı seçilmedi.
