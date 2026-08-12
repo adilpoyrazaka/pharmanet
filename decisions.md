@@ -183,6 +183,29 @@ değilken açılmak tek varlığımızı yakar. *Opus, Poi kabul etti.*
 **D28 — Devir teslim dosyayla, sohbetle değil.** KİLİT
 Spec dosyasında olmayan şey kodda olmaz. Dosya sahiplikleri PROJECT.md §10.
 
+**D31 — Yayınlanmış kapsama oranı üst sınırdır ve ürün şeklini belirlemez.** KİLİT
+R2 sayısı kurumların *yayınlanmış* listelerinden türetilir. Hata yönü tahmin
+edilebilir: kurumlar biten anlaşmayı geç siler, olmayan eczaneyi eklemez — yani
+yayınlanmış oran üst sınırdır, gerçek ondan düşük olabilir, yüksek olamaz.
+İlk sürümde bu sayıyı A1'in (ana ekran) kapısı yapmıştım; yanlıştı. Üç sebeple:
+(1) o listeye zaten güvenmiyoruz — D8, D9, D14'ün tamamı bu güvensizlik üzerine
+kurulu, dolayısıyla ondan çıkan oranı ürün kararına dayanak yapmak kendi karar
+mimarimizle çelişir; (2) oran ne olursa olsun kullanıcının işi değişmiyor —
+"konumuma yakın, planımı kabul eden eczane"; (3) gerçek oranı K2 saha turu
+zaten tek geçerli çözünürlükte üretecek, tahmini beklemek D25'in maliyetidir.
+R2 yalnızca **ölçekleme** için kullanılır: kaç kurum var, hangisinden başlanmalı,
+kaynak yapısı nasıl. *Poi çürüttü, Opus kabul etti.*
+
+**D32 — Araştırma brief'ine strateji yazılmaz.** KİLİT
+Tur 1 brief'inin G-2 bölümünde "oran düşükse ürün filtre, yüksekse doğrulama aracı"
+yazıyordu. Bu, modele hangi sayının hangi sonucu doğuracağını söylüyor ve boş hücre
+bırakmayı zorlaştırıyor — ORCHESTRATION §3'ün "Gemini'ye strateji verilmez"
+kuralının ihlali. Ayrıca payda (ilçedeki toplam eczane sayısı) Gemini'den
+istenmemeli; kanonik kütük oda portalıdır (D12). Üçüncü kusur: brief coğrafi
+birim olarak **ilçe** kullanıyor, oysa projenin birimi 5 bölge / 183 eczanedir
+(D11) — dönen tablo saha turunun birimine çevrilemez.
+*Opus yakaladı, Poi onayladı; birim kusurunu Poi buldu.*
+
 **D30 — Gemini araştırma görevleri `R1…R7`, `G` değil.** KİLİT
 `G1–G3` (`PROJECT.md` §2) kararı belirleyen üç gerçeğin etiketi ve öyle kalır.
 Aynı harfin ikinci bir numaralandırma için kullanılması gerçek bir yanlış
@@ -193,12 +216,11 @@ brief üretti: "G2 öncelikli" iki dosyada iki farklı işi gösteriyordu.
 
 ## Açık — karara bağlanmadı
 
-**A1 — G1 kapsama oranı.** Kurum başına anlaşmalı eczane / toplam eczane.
-Ürün *filtre* mi *doğrulama aracı* mı — ana ekranı bu belirliyor.
-**Blokaj yönü:** A1'i açan Gemini değil, dikey dilimdir — kapsama oranını
-veri hattı kendi çıktısı olarak üretir (`PROJECT.md` §9, Faz 0). Gemini'nin
-R2 çıktısı bu hattın *girdisi* olan kaynak envanteridir, cevabın kendisi değil.
-Bekleme değil inşa maddesi.
+**A1 — KAPANDI olarak yeniden sınıflandırıldı (2026-08-12).** Kapsama oranı bir
+*blokaj* değil, K2 saha turunun yan çıktısı olan bir *ölçüm*. Ana ekran tasarımı
+onu beklemez: oran ne çıkarsa çıksın kullanıcının sorusu aynı. Ölçümün asıl
+değeri D10 ve D20'de — yayınlanan ile gerçek arasındaki fark, kaldıraç kapısında
+masaya konacak kozun ağırlığını belirler. *Poi çürüttü, Opus kabul etti.*
 
 **A2 — Reklam eşiği sayısı.** Madde 6 (elde tutma) konuşulduktan sonra.
 
