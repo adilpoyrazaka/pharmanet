@@ -67,17 +67,12 @@ Sebep: dört model aynı dosyaya yazarsa çelişkiler oluşur ve kimse fark etme
 
 ---
 
-## 5. Oturum kapanış ritüeli
+## 5. Oturum promptu ve kapanış ritüeli
 
-Her oturumun sonunda, sırasıyla:
+→ `session-prompt.md`
 
-1. Yeni karar çıktıysa → `decisions.md`'ye eklenir (tarih + gerekçe + kim verdi).
-2. Plan değiştiyse → `PROJECT.md`'nin ilgili bölümü güncellenir.
-3. `STATE.md` **baştan yazılır**.
-4. Hepsi commit edilir.
-
-Bu ritüel atlanırsa bir sonraki oturum yanlış bir durumdan başlar.
-Oturum sonunda "STATE güncelle" demen yeterli.
+Açılış promptu ve kapanış ritüeli orada. Bu dosya değişirse
+`session-prompt.md`'yi de güncelle — ikisi birbirine bakar.
 
 ---
 
