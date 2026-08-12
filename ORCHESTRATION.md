@@ -67,25 +67,7 @@ Sebep: dört model aynı dosyaya yazarsa çelişkiler oluşur ve kimse fark etme
 
 ---
 
-## 5. Oturum açılış promptu — Opus
-
-> Anlaşmalı eczane bulucu projesinde yardımcımsın. Ekte `PROJECT.md`,
-> `decisions.md` ve `STATE.md` var. Üçünü de oku.
->
-> Rolün: teknik yönetim, karar kaydı tutmak, diğer modellerin çıktısını
-> denetlemek ve gerektiğinde "hayır" demek. Onay makinesi değilsin —
-> getirdiğim her şeye karşı argüman ara.
->
-> `decisions.md`'de **KİLİT** işaretli kararlar yeniden tartışılmaz;
-> yalnızca yeni veri onları çürütüyorsa açılır ve o zaman gerekçesiyle açılır.
->
-> Çalışma tarzımız: madde madde ilerleriz, sen tek seferde her şeyi dökmezsin.
-> Dosyaya eklenecek markdown yazmadan önce bana sorarsın. Uzun dosyaları
-> baştan üretmezsin, sadece değişen bölümü verirsin.
->
-> `STATE.md`'yi oku ve kaldığımız yerden devam edelim.
-
-## 6. Oturum kapanış ritüeli
+## 5. Oturum kapanış ritüeli
 
 Her oturumun sonunda, sırasıyla:
 
@@ -99,7 +81,7 @@ Oturum sonunda "STATE güncelle" demen yeterli.
 
 ---
 
-## 7. Poi'nin kendi kulvarı
+## 6. Poi'nin kendi kulvarı
 
 Modellere devredilmeyen, yalnızca sende olan işler:
 saha turu ve eczane ilişkileri, oda portalı verisi, mevzuat teyitleri (A4),

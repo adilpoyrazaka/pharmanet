@@ -43,10 +43,17 @@ arası sohbet değil, üretimde doğrulama. *Poi sordu, Opus konumlandırdı.*
 Sahada anlaşma yalnızca özel sigortayla değil; banka sandıkları ve diğer kurum
 sağlık planları da aynı soruyu üretiyor. Bugün maliyetsiz, sonra göç demek.
 *Poi'nin "şirketler, bankalar, kurumlar" ifadesinden yakalandı.*
+**D7 ek notu (dil kararı sonrası, 2026-08-12).** Adlandırma `institution` +
+`institution_type`. D7 dil kararından önce yazıldığı için Türkçe adlandırılmıştı;
+öz değişmedi, yalnızca teknik adlandırma kuralına uyduruldu. *Poi.*
 
 **D8 — Her kayıt `verification_method` + `verified_at` taşır, `confidence` bundan türer.** KİLİT
 Yöntemler: `oda` / `saha` / `telefon` / `eczaci_beyani` / `scraped`.
 Arayüz en güçlü doğrulamayı gösterir. *Opus, Poi onayladı.*
+**D8 ek notu (2026-08-12).** Kanonik enum, İngilizce: `chamber` · `field` ·
+`phone` · `self_claimed` · `scraped`. `PROJECT.md` §6.7'de bu alan dört değerle
+ve `oda` Türkçe kalmış şekilde yazılmıştı; eksik olan `field` (K2 saha turunun
+çıktısı) geri eklendi. Şemaya giren liste budur. *Poi yakaladı, taramada genişledi.*
 
 **D9 — Çelişki kuralı: eczane beyanı kazanır.** KİLİT
 Kurumun listesi "evet", eczane "hayır" diyorsa eczane kazanır — müşteriyi geri
@@ -154,19 +161,49 @@ değilken açılmak tek varlığımızı yakar. *Opus, Poi kabul etti.*
 **D28 — Devir teslim dosyayla, sohbetle değil.** KİLİT
 Spec dosyasında olmayan şey kodda olmaz. Dosya sahiplikleri PROJECT.md §10.
 
+**D29 — Ana tablo `facility` + `facility_type`, `pharmacy` değil.** KİLİT
+Karar D7 ile aynı yöne çıkıyor ama gerekçe farklı. D7'de genişleme kesindi
+(banka sandıkları pilot bölgede zaten var); burada genişleme park edilmiş bir
+opsiyon (§15, sağlık zinciri). Kararı belirleyen olasılık değil maliyet
+asimetrisi: bugün `facility` demek bir kelime; sonradan `pharmacy`'den göç
+etmek tablo adı, tüm yabancı anahtarlar, index'ler, dbt modelleri, API yolları
+ve frontend tipleri demek — ve o göç tam da genişlemeye karar verdiğin, yani
+en meşgul olduğun anda gelir. Sıfır maliyetli sigorta düşük olasılıklı riske
+karşı da alınır.
+
+**Bağlayıcı şart — isim geniş, davranış dar.** `facility_type` v1'de tek
+değerlidir (`pharmacy`). Her sorgu, her dbt modeli ve her bileşik index
+`facility_type = 'pharmacy'` koşulunu **açıkça taşır**; "sorgu katmanı tek tip
+olduğunu varsayar" yeterli değildir. Gerekçe: ikinci tip tabloya girdiği gün
+filtresiz sorgular sessizce yanlış tesis döndürür. Bu bir tip hatası değil veri
+hatasıdır — derleyici yakalamaz, yalnızca test yakalar, test yoksa kullanıcı
+yakalar. Kullanıcıya yanlış tesis göstermek güven vaadinin öldüğü noktadır
+(§1), yani göçten kaçınmak için alınan sigorta tam da göçün geldiği anda
+patlamış olur. *Poi karar verdi, şart Opus, Poi onayladı.*
+
+*A5 bu kararla kapandı.*
+
+**D30 — Gemini araştırma görevleri `R1…R7`, `G` değil.** KİLİT
+`G1–G3` (`PROJECT.md` §2) kararı belirleyen üç gerçeğin etiketi ve öyle kalır.
+Aynı harfin ikinci bir numaralandırma için kullanılması gerçek bir yanlış
+brief üretti: "G2 öncelikli" iki dosyada iki farklı işi gösteriyordu.
+`STATE.md` ve Gemini brief'i `R` kullanır. *Opus yakaladı, Poi karar verdi.*
+
 ---
 
 ## Açık — karara bağlanmadı
 
 **A1 — G1 kapsama oranı.** Kurum başına anlaşmalı eczane / toplam eczane.
-Ürün *filtre* mi *doğrulama aracı* mı — ana ekranı bu belirliyor. Veri hattının
-ilk çıktısı.
+Ürün *filtre* mi *doğrulama aracı* mı — ana ekranı bu belirliyor.
+**Blokaj yönü:** A1'i açan Gemini değil, dikey dilimdir — kapsama oranını
+veri hattı kendi çıktısı olarak üretir (`PROJECT.md` §9, Faz 0). Gemini'nin
+R2 çıktısı bu hattın *girdisi* olan kaynak envanteridir, cevabın kendisi değil.
+Bekleme değil inşa maddesi.
 
 **A2 — Reklam eşiği sayısı.** Madde 6 (elde tutma) konuşulduktan sonra.
 
-**A3 — Poi'nin listesinden işlenmemiş maddeler:** 3 (telefon/WhatsApp/harita, özellik
-kaydı), 4 (dizin siteleriyle ortaklık), 5 (doktor/hastane dizinleri, kupon),
-6 (elde tutma — ayrı ve uzun tur), 7 (bilgilendirici içerik), 8 (Instagram + X, bülten).
+**A3 — KAPANDI (2026-08-12).** Poi'nin 8 maddelik listesi madde madde işlendi;
+çıktısı `PROJECT.md` §13–17. İşlenmemiş madde kalmadı.
 
 **A4 — Mevzuat teyidi:** eczane reklam yasağının "bilgilendirme" sınırı.
 Poi'nin kolunda.
