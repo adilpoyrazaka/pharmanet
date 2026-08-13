@@ -2,56 +2,53 @@
 
 > **Son güncelleme:** 2026-08-13
 > Bu dosya kısa kalır (≈40 satır). Her oturumda **baştan yazılır**, eklenmez.
-> Uzarsa okunmaz olur ve işlevini kaybeder.
 > Sadece "şu an neredeyiz" bilgisi. Gerekçeler `decisions.md`'de, plan `PROJECT.md`'de.
 
 ## Faz
 Faz 0 — Zemin. Henüz kod yazılmadı.
 
 ## Tamamlanan
-- `PROJECT.md` bölüm 1–17 yazıldı.
-- `decisions.md` — D1–D40 kilitli karar, A1–A5 açık kayıt. A1, A3, A5 kapandı.
-- Repo kuruldu: github.com/adilpoyrazaka/pharmanet. `.gitattributes` ile satır
-  sonu normalize edildi; commit kimliği düzeltildi.
+- `PROJECT.md` 1–17, `decisions.md` D1–D44, repo `adilpoyrazaka/pharmanet`.
 - Pilot bölge sayıları alındı (183, 2026-08-12 sayımı).
-- Senkron denetimi 2026-08-13: alan adı çakışması, kapsama oranı kalıntıları,
-  Places'in kanonik kütükteki yeri, Gemini dosya adının üç varyantı, A4'ün eksik
-  iki maddesi kapatıldı. Karar numaraları baştan sıralandı; eski oturumlardaki
-  D numaraları artık geçerli değildir. Bakım kuralı D40'ta: yerinde güncelleme,
-  bölüm içi artan numara, toplu renumaralama yok.
+- **2026-08-13 denetimi:** dosyalar arası 25 bulgu çıkarıldı. Kapatılanlar:
+  G etiketi emekliye ayrıldı (D35), harita yüzeyi düştü (D3), konum işleme
+  dürüstleştirildi (D41), Faz 3'ün yanlış muhatabı ve ölçülemez kriteri (D42),
+  yürütme birimi bölgeye çevrildi (D43), organik trafik ikiye ayrıldı (D44).
+  D11, D21, D32, D33, D38 gövdeleri yerinde güncellendi.
 
 ## Şu an devam eden
-- **K1 — oda portalından kanonik kütüğün çekilmesi.** Sıradaki gerçek iş.
-  Portal girişi yapıldı, tüm eczaneler bölge nitelikleriyle görünüyor.
-  Word değil CSV/Excel olarak dışa aktarılacak; ham hali üretim verisi olarak
-  saklanır, `research/` değildir.
-- Gemini R1…R7 turu 1 çıktısı bekleniyor (brief revize edilecek, aşağıda).
+- **K1 — oda portalından kanonik kütüğün çekilmesi.** Portal girişi yapıldı.
+  CSV/Excel dışa aktarım; ham hali üretim verisidir, `research/` değildir.
+- `research/R1…R7` tur 1 çıktısı bekleniyor.
 
 ## Sıradaki adımlar
-1. K1 kütüğü: portal sütun başlıkları + örnek satırlar → şema kesinleştirme.
-2. Araştırma brief'i tur 2 revizyonu (D19, D37, D38).
-3. `architecture.md` — Claude Code + Fable.
-4. Tek kurum için uçtan uca dikey dilim.
-5. Sosyal medya kullanıcı adları (handle kapılma riski).
+1. **Alan adı** — D43/D44 ile kritik yola girdi: söylenebilir, Türkçe klavyede
+   yazılabilir, aramada ayırt edilebilir. Sosyal medya adları buna bağlı.
+2. `.gitignore` doldurulması — K1 ham kütüğü depoya girmeden önce (dosya boş).
+3. K1 kütüğü: portal sütun başlıkları + örnek satırlar → şema kesinleştirme.
+4. Araştırma brief'i tur 2 revizyonu (D19, D37, D38).
+5. `architecture.md` — Claude Code + Fable.
+6. Tek kurum için uçtan uca dikey dilim.
 
 ## Bloke olanlar
-- **Reklam eşiği** → 30 günlük geri dönen ziyaretçi verisi olmadan belirlenemez.
+- **Reklam eşiği (A2)** → araç sayfalarının trafik verisi olmadan belirlenemez.
 
 ## Açık kararlar
-- **A1** KAPANDI — kapsama oranı projeden çıktı (D38)
-- **A2** Reklam eşiği sayısı — trafik verisi bekleniyor
-- **A3** KAPANDI — 8 maddelik liste işlendi, çıktısı `PROJECT.md` §13–17
-- **A4** Mevzuat teyitleri, üç ayrı soru — A4.1 reklam/bilgilendirme sınırı,
-  A4.2 sağlık hizmetinde fiyat tanıtımı, A4.3 İYS/ticari elektronik ileti — Poi'de
-- **A5** KAPANDI — D15
+- **A2** Reklam eşiği — trafik bekliyor. Envanter sonuç yüzeyinde değil §16
+  araç sayfalarında yaşayacak (D28); eşik oran değil mutlak taban + oran olmalı.
+- **A4** Mevzuat teyitleri (A4.1 reklam sınırı, A4.2 fiyat tanıtımı,
+  A4.3 İYS/ticari elektronik ileti) — Poi'de.
+- A1, A3, A5 KAPANDI.
 
-## Brief tur 2 düzeltmeleri (D19, D37, D38)
-- "EN KRİTİK GÖREV" ibaresi ve strateji cümleleri silinir.
-- Kapsama oranıyla ilgili tüm sütunlar kalkar; oran projeden çıktı (D38).
-- Coğrafi kırılım istenmez: İzmir geneli, ad + adres satırları (D19).
-- Çıktı sayı değil satır; kısmi tablo kabul, eksikler "Erişemediklerim"de.
-
-## Henüz yapılmamış / risk
-- Alan adı seçilmedi.
-- Sosyal medya kullanıcı adları alınmadı.
-- `research/` klasörü henüz yok; ilk R dosyası onu oluşturacak (`research/R1.md`).
+## Sonraki oturuma devreden bulgular
+Ağır: (4) `confidence` §6.6'da yanlış alandan türetiliyor + `sayım tarihi`
+Türkçe alan adı · (5) Faz 1 öldürme kriteri 1 ölçülemez, "5 eczane" kaynaksız ·
+(7) R2 çıktısının alıcısı yok · (10) `is_open` katman önceliği ters ·
+(11) bölge kuralı tablosu `city + district` anahtarlı ama birim bölge (D43) ·
+(12) saha formunda takip etiketi ve `verification_method` yok ·
+(13) K1 aylık tazeleme sahipsiz, §8 girişli portalı kapsamıyor ·
+(14) Places koordinatı + MapLibre/ToS.
+Orta: (8) D36–D38 kelime çelişkisi · (9) A4.1'in L1 blokaj iddiası şişkin ·
+(16) §13 v1 ile §16 araçları uzlaşmıyor · (22) Claude Code paketinde §13/§14 yok.
+Hijyen: (18) §12 bayat · (19) durum kodları ve gövdelerdeki tarihçe ·
+(21) PROJECT "tek gerçek kaynak" ile ORCHESTRATION katmanı çelişiyor.
