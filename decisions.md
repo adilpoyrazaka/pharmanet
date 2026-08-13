@@ -261,7 +261,7 @@ birim olarak **ilçe** kullanıyor, oysa projenin birimi 5 bölge / 183 eczanedi
 (D11) — dönen tablo saha turunun birimine çevrilemez.
 *Opus yakaladı, Poi onayladı; birim kusurunu Poi buldu.*
 
-**D38 — G1 kapsama oranı projeden çıkarıldı; veri tezi kriteri Faz 1'e taşındı.** KİLİT
+**D38 — Kapsama oranı projeden çıkarıldı; veri tezi kriteri Faz 1'e taşındı.** KİLİT
 
 **Vaat.** Doğruluk hedefi %100'dür ama bu bir eşik
 değil bir kuraldır — eşik olarak yazılırsa ilk ölçümde tetiklenir ve görmezden
