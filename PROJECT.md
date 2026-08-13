@@ -66,8 +66,9 @@ Gerçek an şu:
 Bu tanım her şeyi belirler:
 
 - **Sıfır sürtünme.** Kayıt, onboarding, uygulama indirme yok. Web. Tek ekran.
-- **Konum tarayıcıdan, sunucuya gitmez.** Hem gizlilik hem hız hem KVKK yükünün
-  büyük kısmının ortadan kalkması.
+- **Konum yalnızca sıralama için, saklanmadan.** Hassas koordinat isteğin
+  gövdesinde gider, hiçbir yere yazılmaz ve log'lanmaz (D41). İzin verilmezse
+  ilçe seçimiyle aynı sonuç mesafesiz gelir — akış durmaz.
 - **Erişilebilirlik teknik detay değil, pazar meselesi.** Sürekli ilaç kullanan
   kitle yaş ortalaması yüksek. Büyük punto, yüksek kontrast, büyük dokunma alanları.
 - **Dağıtım noktası eczanenin kendisi.** Kişi bu ürüne ihtiyaç duyduğu anda
@@ -160,10 +161,9 @@ karmaşıklık da eklenmez.
   render gerektiriyor; bu seçim pazarlıksız.
 - **Tailwind CSS + Radix primitives.** Bileşen kütüphanesi hazır tema olarak
   değil, sadece erişilebilirlik iskeleti olarak kullanılır.
-- **MapLibre GL JS + vektör tile sağlayıcı (Protomaps veya MapTiler).**
-  Google Maps JS değil: ölçekte maliyet, tam stil kontrolü ve satıcı bağımlılığı
-  sebebiyle. Haritanın görsel kimliği ürünün imzası olacak, o yüzden stil
-  üzerinde tam kontrol şart.
+- **Harita yüzeyi yok (D3).** Yol tarifi, telefonun harita uygulamasına derin
+  bağlantıyla devredilir; ürün içinde taban harita çizilmez. Gerekirse ileride
+  MapLibre + vektör tile.
 - Google Places yalnızca coğrafi kodlama ve zenginleştirme için, arka planda.
 
 ### 6.2 Veri hattı (ayrı servis, Python)
@@ -319,8 +319,8 @@ bilgisi tutulmaz — işletme tutulur, kişi tutulmaz.
 - Next.js → Vercel. Python işçi → Fly.io veya Railway. Veritabanı → Neon/Supabase.
 - Analitik → Plausible veya PostHog (KVKK açısından Google Analytics'ten temiz).
 - Hata izleme → Sentry.
-- **Kişisel veri toplamıyoruz.** Hesap yok, konum sunucuya gitmiyor.
-  Bu bir gizlilik tercihi olduğu kadar bir hız ve uyum tercihi.
+- **Hesap yok, kalıcı kişisel veri yok.** Hassas konum yalnızca sıralama anında
+  işlenir, saklanmaz ve log'lanmaz (D41).
 
 ---
 
@@ -339,7 +339,6 @@ zayıf; bu, tasarımın kendisini gerçek bir rekabet silahı yapıyor.
   yardımcı araçta bu maliyettir. Kullanıcı gergin, ilaç arıyor, öğrenmek istemiyor.
 
 Kural: **tanınmadık bir ürün gibi görün, tanıdık bir ürün gibi çalış.**
-Cesaret görsel kimlikte ve haritada harcanır; etkileşim kalıbında harcanmaz.
 
 "Yenilikçi" burada şu üç şey demek:
 
@@ -347,8 +346,9 @@ Cesaret görsel kimlikte ve haritada harcanır; etkileşim kalıbında harcanmaz
    Karşılama sayfası, kaydırmalı tanıtım, modal yok.
 2. **Radikal veri şeffaflığı.** Her sonuç kartında son doğrulama tarihi ve
    kaynak bağlantısı. Rakiplerin hiçbiri bunu yapmıyor; ürünün karakteri bu.
-3. **Haritanın kendisi imza.** Soluk, doygunluğu düşürülmüş özel bir taban
-   harita stili; sayfadaki tek doygun renk eczane işaretleri olsun.
+3. **İmza harita değil, sonuç kartı.** Ürün içinde harita yok (D3); ayırt edici
+   yüzey listenin kendisidir. Tipografi, hiyerarşi ve doğrulama rozetinin
+   işlenişi tasarımın ağırlığını taşıdığı yerdir.
 
 Zorunlu teknik kısıtlar:
 - **Tipografi Türkçe diakritik güvenli olmalı.** Trend fontların çoğu ğ, ş, ı, İ
@@ -366,6 +366,10 @@ gradyan kahraman bölümü, stok illüstrasyon.
 
 - **Veri kaynağı:** Yalnızca kamuya açık ticari işletme bilgisi (ad, adres, şirket
   ilişkisi). robots.txt'e uy, hız sınırla, önbellekle, kaynağı göster.
+- **Kullanıcı verisi:** Hesap yok, kayıt yok. Hassas konum yalnızca sıralama
+  anında işlenir; saklanmaz, log'lanmaz, analitiğe gönderilmez ve URL'de
+  taşınmaz (D41). Aydınlatma metni bu kapsamı birebir yazar — "konumunuz bize
+  gelmiyor" denmez.
 - **Marka kullanımı:** Şirket adını olgusal olarak anmak (bu eczane Allianz ile
   anlaşmalı) meşru; logolarını pazarlama materyalinde kullanmak değil.
 - **Sorumluluk reddi:** "Bilgi kaynaktan alınmıştır, gitmeden önce teyit ediniz"
@@ -523,7 +527,7 @@ güvenilir şekilde tespit edilemez. Doğrulanmamışta hiç göstermemek, bozuk
 göstermekten iyidir.
 
 **Harita ayrımı:** Yol tarifi için Google / Apple / Yandex'e derin bağlantı
-verilir (navigasyon yazılmaz), ancak harita yüzeyi MapLibre kalır (D3).
+verilir; navigasyon yazılmaz ve ürün içinde harita yüzeyi çizilmez (D3).
 Türkiye'de Yandex kullanımı yüksek olduğu için üçü de sunulur.
 
 ### v1'de YOK (bilinçli)

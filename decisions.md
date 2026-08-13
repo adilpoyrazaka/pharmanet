@@ -21,9 +21,24 @@ SEO burada pazarlama değil mimari zorunluluk — büyüme motorlarından biri o
 "Şu kuruma bağlı, bana en yakın N eczane" sorgusu doğrudan PostGIS işi.
 Ayrı arama motoru gerekmez, `pg_trgm` yeterli. *Opus.*
 
-**D3 — MapLibre + vektör tile, Google Maps JS değil.** KİLİT
-Ölçekte maliyet, tam stil kontrolü, satıcı bağımsızlığı. Harita stili ürünün
-görsel imzası olacağı için stil kontrolü pazarlıksız. *Opus.*
+**D3 — v1'de harita yüzeyi yok; konum derin bağlantıyla harita uygulamasına devredilir.** KİLİT
+Sonuç listesi ad, adres, mesafe ve doğrulama rozeti taşır. "Yol tarifi"
+Google / Apple / Yandex'e derin bağlantıdır (§13); ürünün içinde taban harita
+çizilmez.
+
+Gerekçe: kullanıcı gömülü haritada zaten "büyük haritada aç"a basıp navigasyona
+geçiyor — o adımı atlamak tile maliyetini, harita bileşenini ve mobil ağırlığı
+birlikte sıfırlar. Yaşlı kitlede tanıdık bir uygulamaya çıkmak, gömülü haritada
+zoom ile uğraşmaktan iyidir (§3 erişilebilirlik ilkesi). Places içeriğinin
+Google olmayan bir harita üzerinde gösterilmesi sorunu da ortadan kalkar.
+
+**Bağlayıcı şart:** derin bağlantı tek sağlayıcıya kilitlenmez; üçü de sunulur,
+platforma göre sıralanır.
+
+Bir harita yüzeyi gerçekten gerekirse (Faz 2+, örneğin kapsama görselleştirmesi)
+seçim MapLibre + vektör tile'dır — Google Maps JS değil: ölçekte maliyet, tam
+stil kontrolü, satıcı bağımsızlığı. O gün gelene kadar yazılmaz.
+*İlk hali Opus; harita yüzeyinin düşürülmesi Poi.*
 
 **D4 — Model API'leri okuma yolunda ÇALIŞMAZ.** KİLİT
 Kullanıcı sorgusu saf PostGIS: deterministik, milisaniyelik, maliyetsiz.
@@ -36,6 +51,30 @@ Poi'nin "API'leri birbirine bağlayalım" sezgisinin doğru katmanı bu — asis
 arası sohbet değil, üretimde doğrulama. *Poi sordu, Opus konumlandırdı.*
 
 **D6 — Claude Code'un modeli Fable.** KİLİT *Poi.*
+
+**D41 — Yakınlık sıralaması sunucuda; koordinat iletilir, saklanmaz.** KİLİT
+"Bana en yakın N eczane" sorgusu PostGIS'te çalışır. Kullanıcının koordinatı
+isteğin gövdesinde sunucuya iletilir; veritabanına yazılmaz, log'a düşmez,
+analitiğe gönderilmez.
+
+Gerekçe: sıralamayı yapan taraf konumu bilmek zorundadır — bu kaçınılabilir bir
+şey değil. İstemcide sıralama mümkündü (ilçe kapsamlı aday kümesi + tarayıcıda
+haversine) ama sonuç kalitesini ilçe sınırlarında düşürüyor ve D19'un altını
+çizdiği gerçeği geri getiriyordu: ilçe bu projenin doğal birimi değil.
+
+**Bağlayıcı şartlar.**
+1. Koordinat **asla** URL'de veya query string'de taşınmaz — yalnızca istek
+   gövdesi. Aksi halde erişim log'u, referrer başlığı ve CDN kaydı olmak üzere
+   üç ayrı yerde saklanmış olur ve "saklamıyoruz" cümlesi yanlış beyana döner.
+2. Konum izni reddi birinci sınıf akıştır, hata değil: ilçe seçimiyle aynı liste
+   mesafesiz döner (§13).
+3. Kullanıcıya verilen söz **"konumunuz sunucuya gitmez" değildir.** Sunucu ilçe
+   seçiminden ve IP'den kabaca nerede olunduğunu zaten bilir. İddianın kapsamı
+   hassas koordinatla sınırlıdır: "yalnızca sıralama için kullanılır, saklanmaz
+   ve kaydedilmez."
+
+D4 açılmıyor: okuma yolunda model çalışmaz kuralı aynen geçerli.
+*Poi karar verdi, şartlar Opus.*
 
 ---
 
@@ -150,7 +189,8 @@ göre değişir ve hata sessizdir. *Poi belirledi, sınır Opus.*
 Kural: **tanınmadık bir ürün gibi görün, tanıdık bir ürün gibi çalış.**
 Türkiye'de bu kategoride "iyi yapılmış" hissi veren ilk ürün olmak tek başına
 farklılaşma; bunun için yeni etkileşim kalıbı icat etmek gerekmiyor — o, gergin
-kullanıcı için maliyet. Cesaret görsel kimlikte ve haritada harcanır.
+kullanıcı için maliyet. Cesaret görsel kimlikte ve sonuç kartının işlenişinde
+harcanır (D3).
 *Poi itiraz etti, ayrım üzerinde uzlaşıldı.*
 
 **D22 — Tipografi Türkçe diakritik güvenli olmak zorunda.** KİLİT
@@ -314,7 +354,7 @@ orandan değil çelişki kayıtlarından doğar. *Poi çürüttü, Opus kabul et
 
 **A4 — Mevzuat teyitleri (üç ayrı soru, üçü de Poi'de).**
 Her birinin neyi bloke ettiği yazılır; cevap "hayır" gelirse ne düşeceği belli olsun.
-- - **A4.1** Eczane reklam yasağının "bilgilendirme" sınırı. → Bloke ettiği:
+- **A4.1** Eczane reklam yasağının "bilgilendirme" sınırı. → Bloke ettiği:
   §5 L1 reklam katmanı ve L5 eczane tarafı gelir. `PROJECT.md` §2'nin mevzuat
   satırı budur; ayrı etiketi yoktur (D35).
 - **A4.2** Sağlık hizmeti sunumunda fiyat/indirim tanıtımı sınırı. → Bloke ettiği:
