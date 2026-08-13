@@ -402,6 +402,30 @@ Kabul edilen maliyet: kapsama haritası bir süre delikli olur. Açılmamış b�
 kullanıcı sonuç görür ama çoğu "doğrulanmadı" yüzeyinde kalır. Alternatifi
 D38'in vaadini çiğneyerek tüm İzmir'i tanıtmaktı.
 *Poi karar verdi (birim, sıra, %80); bölge bazlı eşik ve borç kuralı Opus.*
+
+**D44 — Organik trafik markalı ve markasız olarak ayrı ölçülür.** KİLİT
+Search Console'da sorgular markalı / markasız ayrılır; ek araç gerekmez. İkisi
+farklı şeyi gösterir: **markasız** organik trafik SEO motorunun çalıştığını,
+**markalı** organik trafik fiziksel kanalın dijitale geçtiğini gösterir.
+
+Gerekçe: QR'dan gelen kullanıcı doğrudan trafiktir ve sıralama sinyali üretmez.
+Fiziksel bilinirliğin dijitale geçtiği tek köprü, eczacının adı ağzıyla söylemesi
+ve kullanıcının sonra o adı aramasıdır. İkisi tek sayıda toplanırsa Faz 2'nin
+öldürme kriteri bozulur: fiziksel kanalın ürettiği markalı aramalar SEO motorunun
+çalıştığı yanılsamasını verir ve kriter hiç tetiklenmez. **Faz 2'nin öldürme
+kriteri yalnızca markasız trafiğe bakar.**
+
+**Markalı arama teşhis metriğidir, kapı değil.** Search Console coğrafi kırılımı
+ülke düzeyinde verir; "bu bölge açıldı, orada markalı arama arttı mı" doğrudan
+ölçülemez. Ölçülebilen tek şey toplam markalı arama eğrisiyle bölge açılış
+takviminin örtüşmesidir — korelasyon, kanıt değil. Bu yüzden hiçbir öldürme
+kriterine bağlanmaz.
+
+**Marka adı üzerindeki kısıt.** Ad jenerikse ("eczane bul", "anlaşmalı eczane")
+markalı ile markasız sorgu ayrılamaz ve metrik doğduğu anda ölür. Ad üç testten
+geçer: söylenebilir, Türkçe klavyede hatasız yazılabilir, arama sonuçlarında
+ayırt edilebilir. Bu, alan adı seçimini kritik yola taşır (D43: alan adı bugün
+alınır). *Opus önerdi, Poi onayladı.*
 ---
 
 ## Açık — karara bağlanmadı

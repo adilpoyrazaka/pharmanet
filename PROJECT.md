@@ -446,9 +446,12 @@ göstermek güven vaadinin ölümüdür (§1).
   birikmiş sıralamayı yakar.
 - Eczane sahiplenme akışı: eczacı kendi kaydını doğrulasın (veri kalitesi + ilişki).
 
-**Ölçüt:** Organik trafiğin QR trafiğini geçtiği hafta.
-**Öldürme kriteri:** 3 ay sonunda organik arama trafiği ihmal edilebilir düzeydeyse
-SEO motoru çalışmıyor demektir; tek motorlu (fiziksel dağıtım) bir işe küçül.
+**Ölçüt:** Markasız organik trafiğin QR trafiğini geçtiği hafta. Markalı organik
+trafik ayrı izlenir — fiziksel kanalın dijitale geçtiğini gösterir, teşhis
+metriğidir (D44).
+**Öldürme kriteri:** 3 ay sonunda **markasız** organik arama trafiği ihmal
+edilebilir düzeydeyse SEO motoru çalışmıyor demektir; tek motorlu (fiziksel
+dağıtım) bir işe küçül.
 
 ### Faz 3 — İstanbul + Ankara ve ilk gelir (Ay 4–6)
 - Kapsam İstanbul ve Ankara'ya çıkar — kanıtlanmış oyun kitabıyla, deneyerek değil.
