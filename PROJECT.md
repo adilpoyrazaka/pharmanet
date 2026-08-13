@@ -450,12 +450,17 @@ SEO motoru çalışmıyor demektir; tek motorlu (fiziksel dağıtım) bir işe k
 
 ### Faz 3 — Ulusal + ilk gelir (Ay 4–6)
 - Kapsamı ulusala çıkar.
-- L1/L2 için sigorta şirketleriyle ilk görüşmeler. Veri kalitesi raporu satış materyali olur.
+- L2 çapraz trafik ortaklıkları: sigorta/TSS karşılaştırma siteleri, doktor ve
+  hastane dizinleri, kurumsal İK portalları (§15). Veri kalitesi raporu bu
+  görüşmelerin materyalidir.
+- L1 reklam katmanı, trafik eşiği aşıldıysa açılır (D30, A2).
 - Kurumsal yapı, sözleşme, faturalama.
 
-**Ölçüt:** İlk ödeme yapan kurumsal müşteri veya imzalı pilot.
-**Öldürme kriteri:** 6 ay sonunda hiçbir kurumsal taraf ücretli pilota girmiyorsa,
-projeyi trafik/portföy varlığı olarak sınıflandır ve zaman yatırımını düşür.
+**Ölçüt:** L1 trafik eşiğine ulaşılması ve L2'den imzalı ilk çapraz trafik anlaşması.
+**Öldürme kriteri:** 6 ay sonunda ne L1 trafik eşiği aşılmış ne de L2'den tek bir
+imzalı anlaşma çıkmışsa, projeyi trafik/portföy varlığı olarak sınıflandır ve
+zaman yatırımını düşür. Sigorta şirketiyle ücretli pilot bu fazın ölçütü değildir
+— o L3/L4'tür ve kaldıraç kapısının arkasındadır (D26, D42).
 
 ### Faz 4 — Ölçek (Ay 7–12)
 Gelir modeli netleştikten sonra: reklam, beyaz etiket, eczane tarafı ürün.

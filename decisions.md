@@ -337,6 +337,28 @@ o beklenti her yeni kararda toplu renumaralama gerektirirdi ve renumaralama eski
 oturumlardaki atıfları geçersiz kılar. *Poi renumaralamayı istedi, kuralın
 sürdürülebilir hali Opus.*
 
+**D42 — Faz 3'ün ölçütü kurumsal gelir değil, ticarileşebilirlik sinyalidir.** KİLİT
+Faz 3 bir ortaklık ve reklam fazıdır: muhatabı L1 reklamverenleri ve L2 çapraz
+trafik tarafıdır (§15 tablosu). Sigorta şirketiyle ticari masa L3/L4'tür; Faz 4'te
+ve D26 kaldıraç kapısının arkasında kalır.
+
+Düzeltilen hata: faz planı Faz 3'e "L1/L2 için sigorta şirketleriyle görüşmeler"
+yazıyordu — yanlış muhatap, çünkü L1'i dermokozmetik markaları, L2'yi dizin
+siteleri öder — ve öldürme kriterini "ücretli kurumsal pilot"a bağlıyordu. Kriter,
+aynı planın Faz 3'te yapılmasını yasakladığı işi ölçüyordu: kaçınılmaz olarak
+tetiklenecek, ilk ölçümde görmezden gelinecek, ve görmezden gelinen kriter yok
+hükmünde olacaktı. D38'in kapsama oranında yakaladığı hatanın aynısı.
+
+Yeni kriter duruma bağlıdır, sayıya değil: 6 ay sonunda ne L1 trafik eşiği aşılmış
+ne de L2'den tek bir imzalı çapraz trafik anlaşması çıkmışsa proje trafik/portföy
+varlığına sınıflanır. A2 açıkken bile "eşik aşılamadı" ölçülebilir bir durumdur.
+
+Kapının Faz 4'te kalma gerekçesi takvim değil pozisyon: D26'nın ikinci koşulu
+birikimli bir varlıktır. K5 sahiplenme akışı Faz 2'de başlar ama ağ zamanla oluşur;
+D10'un çelişki veri seti de K1–K4 çalıştıkça büyür. Kapıyı erken açmak, kapının
+koruduğu kozu zayıflatır. Kapı kontrolü Faz 3'ün sonunda yapılır.
+*Opus yakaladı, Poi onayladı.*
+
 ---
 
 ## Açık — karara bağlanmadı
