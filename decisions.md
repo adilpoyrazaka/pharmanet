@@ -222,11 +222,19 @@ değilken açılmak tek varlığımızı yakar. *Opus, Poi kabul etti.*
 **D34 — Devir teslim dosyayla, sohbetle değil.** KİLİT
 Spec dosyasında olmayan şey kodda olmaz. Dosya sahiplikleri PROJECT.md §10.
 
-**D35 — Gemini araştırma görevleri `R` ile numaralanır, `G` ile değil.** KİLİT
-`G` etiketi yalnızca `PROJECT.md` §2'deki kararı belirleyen gerçeklere aittir.
-Aynı harfin ikinci bir numaralandırma için kullanılması gerçek bir yanlış
-brief üretti: aynı etiket iki dosyada iki farklı işi gösteriyordu.
-`STATE.md` ve Gemini brief'i `R` kullanır. *Opus yakaladı, Poi karar verdi.*
+**D35 — `G` etiketi emekliye ayrıldı; araştırma görevleri `R` ile numaralanır.** KİLİT
+`G` alanı kapatılır, yerine yeni etiket konmaz. Gemini araştırma görevleri
+`R1…R7` olarak numaralanır; `STATE.md` ve brief `R` kullanır.
+
+Gerekçe: `G` kendi başına iş yapmıyordu. `PROJECT.md` §2'de kalan iki gerçek
+zaten başka kulvarlarda kayıtlı — mevzuat sorusu **A4.1**, pazar boyutlandırması
+bir **R** görevidir; `G` bu iki kayda takma addı. Bakım maliyeti ise gerçekti:
+aynı harfin iki numaralandırmada kullanılması bir yanlış brief üretti, ardından
+kapsama oranı çıkarılınca G'ler kaydırıldı ve A4.1'in `G3` atfı ölü referansa
+döndü. İki kayıt için üçüncü bir etiket alanı tutulmaz.
+
+§2 tablosu kalır; satırları etiketsizdir ve sahibiyle adreslenir.
+*Opus yakaladı, Poi karar verdi.*
 
 **D36 — Yayınlanmış kapsama oranı üst sınırdır ve ürün şeklini belirlemez.** KİLİT
 R2 sayısı kurumların *yayınlanmış* listelerinden türetilir. Hata yönü tahmin
@@ -254,11 +262,6 @@ birim olarak **ilçe** kullanıyor, oysa projenin birimi 5 bölge / 183 eczanedi
 *Opus yakaladı, Poi onayladı; birim kusurunu Poi buldu.*
 
 **D38 — G1 kapsama oranı projeden çıkarıldı; veri tezi kriteri Faz 1'e taşındı.** KİLİT
-Oran ne çıkarsa çıksın ne ürün ne ekran ne şema değişiyor (D36). Dahası ölçülecek
-bir şey de yok: sahadaki dağınıklık — hangi eczanenin hangi kurumla anlaşmalı
-olduğunun bilinmemesi — ürünün varlık sebebidir, karar değişkeni değil. Filtre
-zaten bu yüzden var. Faz 0'ın çıktısı ölçüm değil altyapıdır; oradaki öldürme
-kriteri baştan yanlış faza yazılmıştı ve kaldırılmıştır.
 
 **Vaat.** Doğruluk hedefi %100'dür ama bu bir eşik
 değil bir kuraldır — eşik olarak yazılırsa ilk ölçümde tetiklenir ve görmezden
@@ -311,9 +314,9 @@ orandan değil çelişki kayıtlarından doğar. *Poi çürüttü, Opus kabul et
 
 **A4 — Mevzuat teyitleri (üç ayrı soru, üçü de Poi'de).**
 Her birinin neyi bloke ettiği yazılır; cevap "hayır" gelirse ne düşeceği belli olsun.
-- **A4.1** Eczane reklam yasağının "bilgilendirme" sınırı. → Bloke ettiği:
-  §5 L1 reklam katmanı ve L5 eczane tarafı gelir. G3 ile aynı sorudur; G3 etiketi
-  `PROJECT.md` §2'de kalır, içerik burada tutulur (D35 deseni).
+- - **A4.1** Eczane reklam yasağının "bilgilendirme" sınırı. → Bloke ettiği:
+  §5 L1 reklam katmanı ve L5 eczane tarafı gelir. `PROJECT.md` §2'nin mevzuat
+  satırı budur; ayrı etiketi yoktur (D35).
 - **A4.2** Sağlık hizmeti sunumunda fiyat/indirim tanıtımı sınırı. → Bloke ettiği:
   §15 fiyat şeffaflığı katmanı.
 - **A4.3** İYS / ticari elektronik ileti kapsamı: push bildirimi kapsama giriyor mu.
