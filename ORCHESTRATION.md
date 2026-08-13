@@ -11,7 +11,7 @@ Dört modelle ve çok oturumla çalışmanın kuralları.
 | Plan | `PROJECT.md` | Yavaş | Opus |
 | Gerekçe | `decisions.md` | Yavaş, ekleme | Opus + Poi |
 | Durum | `STATE.md` | Her oturum, **baştan yazılır** | Opus |
-| Ham girdi | `research/*.md` | Ekleme | Gemini çıktısı, olduğu gibi |
+| Ham girdi | `research/R<n>.md` | Ekleme | Gemini çıktısı, olduğu gibi |
 | Teknik | `architecture.md` | Orta | Claude Code + Fable |
 | Tasarım | `design.md` | Orta | ChatGPT |
 
@@ -28,7 +28,7 @@ doğrulanmamış girdi, karar değil; her turda yenisi gelecek.
 Akış:
 
 ```
-Gemini çıktısı  →  research/gemini-01.md  (ham, olduğu gibi, dokunulmadan)
+Gemini çıktısı  →  research/R1.md  (ham, olduğu gibi, dokunulmadan)
                         ↓
                    Opus denetler
                         ↓

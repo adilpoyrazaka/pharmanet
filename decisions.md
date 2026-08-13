@@ -39,21 +39,19 @@ arası sohbet değil, üretimde doğrulama. *Poi sordu, Opus konumlandırdı.*
 
 ## Veri
 
-**D7 — Temel varlık `sigorta_şirketi` değil `kurum`, ayrım `kurum_tipi` ile.** KİLİT
+**D7 — Temel varlık `institution`, ayrım `institution_type` ile.** KİLİT
 Sahada anlaşma yalnızca özel sigortayla değil; banka sandıkları ve diğer kurum
 sağlık planları da aynı soruyu üretiyor. Bugün maliyetsiz, sonra göç demek.
+Arayüz terimi "kurum", şema terimi `institution`.
 *Poi'nin "şirketler, bankalar, kurumlar" ifadesinden yakalandı.*
-**D7 ek notu (dil kararı sonrası, 2026-08-12).** Adlandırma `institution` +
-`institution_type`. D7 dil kararından önce yazıldığı için Türkçe adlandırılmıştı;
-öz değişmedi, yalnızca teknik adlandırma kuralına uyduruldu. *Poi.*
 
 **D8 — Her kayıt `verification_method` + `verified_at` taşır, `confidence` bundan türer.** KİLİT
-Yöntemler: `oda` / `saha` / `telefon` / `eczaci_beyani` / `scraped`.
-Arayüz en güçlü doğrulamayı gösterir. *Opus, Poi onayladı.*
-**D8 ek notu (2026-08-12).** Kanonik enum, İngilizce: `chamber` · `field` ·
-`phone` · `self_claimed` · `scraped`. `PROJECT.md` §6.7'de bu alan dört değerle
-ve `oda` Türkçe kalmış şekilde yazılmıştı; eksik olan `field` (K2 saha turunun
-çıktısı) geri eklendi. Şemaya giren liste budur. *Poi yakaladı, taramada genişledi.*
+Kanonik enum, beş değer: `chamber` · `field` · `phone` · `self_claimed` ·
+`scraped`. `field` K2 saha turunun çıktısıdır ve atlanamaz. Alan adları
+`verified_at` ve `verification_method`'tır; `confidence` bağımsız yazılmaz,
+`verification_method`'tan türer. D17'ün tazelik eşiği `verified_at` üzerinden
+hesaplanır. Arayüz en güçlü doğrulamayı gösterir.
+*Opus, Poi onayladı; enum ve alan adları Poi'nin taramasında kesinleşti.*
 
 **D9 — Çelişki kuralı: eczane beyanı kazanır.** KİLİT
 Kurumun listesi "evet", eczane "hayır" diyorsa eczane kazanır — müşteriyi geri
@@ -81,7 +79,7 @@ Yer kaplamaz, izin süreci hafif, reddedilme eşiği düşük, depo temsilcisini
 Kaynak yapısı değiştiğinde geçmişi yeniden işleyebilmek ve "kaynakta böyleydi"
 diyebilmek için. *Opus.*
 
-**D29 — Ana tablo `facility` + `facility_type`, `pharmacy` değil.** KİLİT
+**D15 — Ana tablo `facility` + `facility_type`, `pharmacy` değil.** KİLİT
 Karar D7 ile aynı yöne çıkıyor ama gerekçe farklı. D7'de genişleme kesindi
 (banka sandıkları pilot bölgede zaten var); burada genişleme park edilmiş bir
 opsiyon (PROJECT.md §15, sağlık zinciri). Kararı belirleyen olasılık değil maliyet
@@ -101,27 +99,66 @@ yakalar. Kullanıcıya yanlış tesis göstermek güven vaadinin öldüğü nokt
 (§1), yani göçten kaçınmak için alınan sigorta tam da göçün geldiği anda
 patlamış olur. *Poi karar verdi, şart Opus, Poi onayladı.*
 
-*A5 bu kararla kapandı.*
+**D16 — Kütük tüm eczanelerden oluşur; nöbet katılımı bir özniteliktir, filtre değil.** KİLİT
+Nöbet tutmayan eczaneler de kütüğe girer. Kütük nöbet listesinden **türetilemez**:
+nöbet verisi kolay erişilir olduğu için cazip bir kısayoldur, ama onu temel almak
+nöbet tutmayan eczaneleri sistemden tamamen siler — kullanıcının önünden her gün
+geçtiği gerçek eczaneleri. D23'nin nöbetçi özelliği bu kütüğün üzerine binen bir
+görünümdür, kaynağı değil. *Poi.*
+
+**D17 — Doğrulama tazelik eşiği 60 gün.** KİLİT
+`verified_at` üzerinden 60 günden fazla geçmiş kayıt "doğrulanmış" rozetini
+kaybeder. Kayıt silinmez, tarihiyle gösterilir. Eşik olmazsa aylar önce yüz yüze
+doğrulanmış bir kayıt arayüzde bugün doğrulanmışla aynı görünür; bu, D28'nin
+koruduğu güveni sessizce aşındırır. *Opus önerdi (90 gün), Poi 60'a çekti.*
+
+**D18 — Katman başına yenileme sıklığı.** KİLİT
+Tek bir "veri güncelleme" sıklığı yok; her katman kendi hızında yenilenir:
+oda kütüğü **aylık** (açılış/kapanış/nakil yavaş, çekmek ucuz), kurum anlaşma
+listeleri **haftalık** (en oynak katman; ürünün doğruluk vaadi buna bağlı),
+nöbet verisi **günlük**, saha/telefon doğrulaması ise sıklıkla değil tazelik
+eşiğiyle yönetilir (D17). *Opus önerdi, Poi onayladı.*
+
+**D19 — R2'de coğrafi kırılım istenmez.** KİLİT
+Oda bölgeleri idari sınırlarla örtüşmüyor: Hatay ve Üçyol hem Konak'a hem
+Karabağlar'a yayılıyor, Mithatpaşa Caddesi birden çok ilçeden geçiyor. Hangi ilçe
+kırılımı seçilirse seçilsin ya bölge dışı kayıt gelir ya bölge içi kayıt düşer.
+Gerek de yok: portal her eczanenin bölge niteliğini zaten veriyor, yani coğrafya
+bizim tarafta çözülü. Gemini'den istenecek olan İzmir geneli **ad + adres satırları**;
+bölge ataması varlık eşlemede (§6.4) kendi kütüğümüzden gelir. *Poi'nin sınır
+itirazı üzerine; ilk öneri (Balçova + Konak) çürüdü.*
+
+**D20 — Kanonik kütük tek kaynaklıdır: oda portalı. Places zenginleştirme ve
+bayrak, otorite değil.** KİLİT
+Kurulum: oda portalından tek seferlik tam çekim → kanonik kütük. Süreklilik:
+D18 uyarınca aylık oda çekimi; varlığın, kimliğin ve bölge niteliğinin tek
+kaynağı budur. Google Places yalnızca (a) koordinat, telefon ve çalışma saati
+**adayı** üretir, (b) oda kaydıyla uyuşmadığında **bayrak açar**. Hiçbir koşulda
+oda kaydını ezmez ve kütüğe satır **ekleyemez**. Places'te olup odada olmayan
+kayıt yeni eczane değildir; insan onay kuyruğuna düşer.
+Gerekçe: varlık eşlemenin (`PROJECT.md` §6.4) referans tarafı tek olmak
+zorundadır. İki kaynaklı referansta "aynı eczane mi" sorusunun cevabı kaynağa
+göre değişir ve hata sessizdir. *Poi belirledi, sınır Opus.*
 
 ---
 
 ## Ürün ve tasarım
 
-**D15 — Zanaat evet, etkileşim yeniliği hayır.** KİLİT
+**D21 — Zanaat evet, etkileşim yeniliği hayır.** KİLİT
 Kural: **tanınmadık bir ürün gibi görün, tanıdık bir ürün gibi çalış.**
 Türkiye'de bu kategoride "iyi yapılmış" hissi veren ilk ürün olmak tek başına
 farklılaşma; bunun için yeni etkileşim kalıbı icat etmek gerekmiyor — o, gergin
 kullanıcı için maliyet. Cesaret görsel kimlikte ve haritada harcanır.
 *Poi itiraz etti, ayrım üzerinde uzlaşıldı.*
 
-**D16 — Tipografi Türkçe diakritik güvenli olmak zorunda.** KİLİT
+**D22 — Tipografi Türkçe diakritik güvenli olmak zorunda.** KİLİT
 ğ ş ı İ glifleri bozulan font onaylanmaz. *Opus.*
 
-**D17 — Nöbetçi eczane özelliği yapılacak, ama ana ürün olarak değil.** KİLİT
+**D23 — Nöbetçi eczane özelliği yapılacak, ama ana ürün olarak değil.** KİLİT
 Nöbetçi verisi metadır, farklılaşma yok. Ama gece tekrar tekrar aranan bir şey:
 elde tutma motoru. Kurum filtresi farklılaştırır, nöbetçi hatırlatır. *Opus.*
 
-**D18 — Elde tutma özellikleri Faz 1–2'de, Faz 3'te değil.** KİLİT
+**D24 — Elde tutma özellikleri Faz 1–2'de, Faz 3'te değil.** KİLİT
 Kurum filtresi düşük frekanslı; trafik birikmezse ne reklam ne kaldıraç kapısı
 çalışır. Poi'nin kendi listesindeki 6-7-8. maddeler bu sorunun cevabı, o yüzden
 öne alındı. *Frekans tartışmasının sonucu.*
@@ -130,11 +167,11 @@ Kurum filtresi düşük frekanslı; trafik birikmezse ne reklam ne kaldıraç ka
 
 ## İş modeli
 
-**D19 — Gelir sıralaması: müzakere gerektirmeyenler önce.**  KİLİT
+**D25 — Gelir sıralaması: müzakere gerektirmeyenler önce.**  KİLİT
 L1 reklam → L2 çapraz trafik ortaklıkları → L3 veri ürünü → L4 beyaz etiket.
 *Poi'nin itirazı üzerine değiştirildi (ilk taslak şirket anlaşmalarını öne almıştı).*
 
-**D20 — Kaldıraç Kapısı.** KİLİT
+**D26 — Kaldıraç Kapısı.** KİLİT
 Sigorta şirketiyle ticari masaya iki koşul birden sağlanmadan oturulmaz:
 (1) tekrar eden tüketici trafiği, (2) kendi kaydını doğrulamış eczane ağı.
 Kazınmış veriyle masaya oturmak savunmasız pozisyondur — "o bizim verimiz,
@@ -142,22 +179,22 @@ kaldırın" denir ve koz kalmaz. Eczane doğrulaması veriyi birinci elden yapar
 hukuki açığı kapatır, kaliteyi kaynağında çözer, izin isteyen taraf olmaktan
 çıkarır. *Poi'nin stratejik itirazı; planın en önemli düzeltmesi.*
 
-**D21 — Eczane sahiplenme akışı Faz 1–2'nin ANA hedefi, yan özellik değil.** KİLİT
-D20'nin doğrudan sonucu. *Poi.*
+**D27 — Eczane sahiplenme akışı Faz 1–2'nin ANA hedefi, yan özellik değil.** KİLİT
+D26'nin doğrudan sonucu. *Poi.*
 
-**D22 — Güven yüzeyi kuralı.** KİLİT
+**D28 — Güven yüzeyi kuralı.** KİLİT
 Eczane sonuç yüzeyi hiçbir gelir kanalına açılmaz: reklam, affiliate, sponsorlu
 sıralama, e-ticaret yönlendirmesi — hiçbiri sonuç listesinin içinde, sıralamasında
 veya kartlarında yer almaz. Gelir modeli değiştikçe yeniden tartışılmaz.
 Tek varlığımız güven; sıralamaya para karıştığı an kaçtığımız kategoriye düşeriz.
 Ayrıca eczane reklam yasağıyla doğrudan çarpışır. *Opus, Poi onayladı.*
 
-**D23 — Reklamveren tabanında ilaç YOK.** KİLİT
+**D29 — Reklamveren tabanında ilaç YOK.** KİLİT
 Beşeri tıbbi ürünlerin halka tanıtımı mevzuatla yasak. Gerçekçi taban:
 dermokozmetik, gıda takviyesi, bebek/kişisel bakım, sağlık dışı markalar.
 *İlk taslakta "OTC üreticileri" yazmıştım; hatalıydı, düzeltildi.*
 
-**D24 — Reklam etiketleri trafik eşiği aşılmadan koda girmez.** KİLİT
+**D30 — Reklam etiketleri trafik eşiği aşılmadan koda girmez.** KİLİT
 Faz 1'de sadece ölçüm kurulur (oturum, sayfa/oturum), reklam altyapısı değil.
 Eşik sayısı madde 6 konuşulduktan sonra belirlenecek. *Opus, Poi onayladı.*
 
@@ -165,25 +202,31 @@ Eşik sayısı madde 6 konuşulduktan sonra belirlenecek. *Opus, Poi onayladı.*
 
 ## Yürütme
 
-**D25 — "Yayında ama tanıtılmıyor".** KİLİT
+**D31 — "Yayında ama tanıtılmıyor".** KİLİT
 Site, yan özellikler bitmeden gerçek alan adında ve indekslenebilir açılır;
 hiçbir kanaldan tanıtılmaz. Arama sıralaması alan adı yaşı ve tarama geçmişiyle
 birikir — geç açılan site trafiği değil olgunlaşmayı kaybeder, o telafi edilemez.
 İtibar riski yok çünkü kimse yönlendirilmiyor. *Poi "önce lokalde bitirelim" dedi,
 ikiye ayırarak uzlaşıldı.*
 
-**D26 — Tanıtımlı açılış kapsamı: 5 ilçe × tüm kurumlar.** KİLİT
+**D32 — Tanıtımlı açılış kapsamı: 5 ilçe × tüm kurumlar.** KİLİT
 K4 turu bittikten sonra. Reklam ve il geneline yayılma bunun arkasında. *Poi.*
 
-**D27 — Genişleme kapısı takvim değil veri kalitesi.** KİLİT
+**D33 — Genişleme kapısı takvim değil veri kalitesi.** KİLİT
 Coğrafi hız kopyalanmaya karşı korumaz; savunma doğrulanmış eczane ağı, veri
 tazeliği ve güven. Pipeline sağlamsa üç şehir zaten bir hafta sürer; sağlam
 değilken açılmak tek varlığımızı yakar. *Opus, Poi kabul etti.*
 
-**D28 — Devir teslim dosyayla, sohbetle değil.** KİLİT
+**D34 — Devir teslim dosyayla, sohbetle değil.** KİLİT
 Spec dosyasında olmayan şey kodda olmaz. Dosya sahiplikleri PROJECT.md §10.
 
-**D31 — Yayınlanmış kapsama oranı üst sınırdır ve ürün şeklini belirlemez.** KİLİT
+**D35 — Gemini araştırma görevleri `R` ile numaralanır, `G` ile değil.** KİLİT
+`G` etiketi yalnızca `PROJECT.md` §2'deki kararı belirleyen gerçeklere aittir.
+Aynı harfin ikinci bir numaralandırma için kullanılması gerçek bir yanlış
+brief üretti: aynı etiket iki dosyada iki farklı işi gösteriyordu.
+`STATE.md` ve Gemini brief'i `R` kullanır. *Opus yakaladı, Poi karar verdi.*
+
+**D36 — Yayınlanmış kapsama oranı üst sınırdır ve ürün şeklini belirlemez.** KİLİT
 R2 sayısı kurumların *yayınlanmış* listelerinden türetilir. Hata yönü tahmin
 edilebilir: kurumlar biten anlaşmayı geç siler, olmayan eczaneyi eklemez — yani
 yayınlanmış oran üst sınırdır, gerçek ondan düşük olabilir, yüksek olamaz.
@@ -192,11 +235,13 @@ yayınlanmış oran üst sınırdır, gerçek ondan düşük olabilir, yüksek o
 kurulu, dolayısıyla ondan çıkan oranı ürün kararına dayanak yapmak kendi karar
 mimarimizle çelişir; (2) oran ne olursa olsun kullanıcının işi değişmiyor —
 "konumuma yakın, planımı kabul eden eczane"; (3) gerçek oranı K2 saha turu
-zaten tek geçerli çözünürlükte üretecek, tahmini beklemek D25'in maliyetidir.
+zaten tek geçerli çözünürlükte üretecek, tahmini beklemek D31'in maliyetidir.
 R2 yalnızca **ölçekleme** için kullanılır: kaç kurum var, hangisinden başlanmalı,
-kaynak yapısı nasıl. *Poi çürüttü, Opus kabul etti.*
+kaynak yapısı nasıl. D38 bu kararı bir adım öteye taşımıştır: oran ürün
+şeklini belirlemediği gibi projeden tamamen çıkarılmıştır; buradaki ölçekleme
+kullanımı geçerliliğini korur. *Poi çürüttü, Opus kabul etti.*
 
-**D32 — Araştırma brief'ine strateji yazılmaz.** KİLİT
+**D37 — Araştırma brief'ine strateji yazılmaz.** KİLİT
 Tur 1 brief'inin G-2 bölümünde "oran düşükse ürün filtre, yüksekse doğrulama aracı"
 yazıyordu. Bu, modele hangi sayının hangi sonucu doğuracağını söylüyor ve boş hücre
 bırakmayı zorlaştırıyor — ORCHESTRATION §3'ün "Gemini'ye strateji verilmez"
@@ -206,26 +251,59 @@ birim olarak **ilçe** kullanıyor, oysa projenin birimi 5 bölge / 183 eczanedi
 (D11) — dönen tablo saha turunun birimine çevrilemez.
 *Opus yakaladı, Poi onayladı; birim kusurunu Poi buldu.*
 
-**D30 — Gemini araştırma görevleri `R1…R7`, `G` değil.** KİLİT
-`G1–G3` (`PROJECT.md` §2) kararı belirleyen üç gerçeğin etiketi ve öyle kalır.
-Aynı harfin ikinci bir numaralandırma için kullanılması gerçek bir yanlış
-brief üretti: "G2 öncelikli" iki dosyada iki farklı işi gösteriyordu.
-`STATE.md` ve Gemini brief'i `R` kullanır. *Opus yakaladı, Poi karar verdi.*
+**D38 — G1 kapsama oranı projeden çıkarıldı; veri tezi kriteri Faz 1'e taşındı.** KİLİT
+Oran ne çıkarsa çıksın ne ürün ne ekran ne şema değişiyor (D36). Dahası ölçülecek
+bir şey de yok: sahadaki dağınıklık — hangi eczanenin hangi kurumla anlaşmalı
+olduğunun bilinmemesi — ürünün varlık sebebidir, karar değişkeni değil. Filtre
+zaten bu yüzden var. Faz 0'ın çıktısı ölçüm değil altyapıdır; oradaki öldürme
+kriteri baştan yanlış faza yazılmıştı ve kaldırılmıştır.
+
+**Vaat.** Doğruluk hedefi %100'dür ama bu bir eşik
+değil bir kuraldır — eşik olarak yazılırsa ilk ölçümde tetiklenir ve görmezden
+gelinir; görmezden gelinen kriter yok hükmündedir. Kural: doğrulanmamış kayıt
+doğrulanmış gibi gösterilmez. `scraped` tek başına "anlaşmalı" ifadesini
+taşıyamaz. Kazıma yayın kaynağı değil, sahanın nereye bakacağını daraltan
+arama alanıdır. Bu, Faz 1'in kapsamını bilerek daraltır: yayına giren
+"anlaşmalı" kayıtlar K2'de doğrulanmış olanlardır.
+
+**Faz 1 öldürme kriteri 2 — ölçülen şey doğruluk değil maliyet.** Kazınmış
+`kurum × eczane` çiftlerinin precision'ı **%50'nin altındaysa** kazıma arama
+alanını daraltmıyor demektir; her kayıt ayakla toplanır ve Faz 2'nin üç şehir
+hedefi düşer. Recall kritere girmez: eksik eczane göstermek küçük hata, olmayan
+anlaşmayı göstermek güven vaadinin ölümüdür.
+*Poi çürüttü (oran anlamsız), Opus kabul etti; yerine geçen kriter ve vaat
+kuralı Opus, eşik Poi.*
+
+**D39 — Gemini çıktısının tek adlandırması: `research/R<n>.md`.** KİLİT
+Üç dosyada üç ad vardı: `data-sources.md` (`PROJECT.md` §10), `research/*.md`
+(ORCHESTRATION §2), `research/R1-....md` (STATE). Görev numarası zaten etiket
+olduğu için slug eklenmez — `research/R1.md` … `research/R7.md`. Sonraki turlar
+aynı dosyaya tarihli başlıkla **eklenir**, yeni dosya açılmaz; bir görevin tüm
+turları yan yana okunur. `data-sources.md` adı bırakıldı. *Poi.*
 
 ---
 
 ## Açık — karara bağlanmadı
 
-**A1 — KAPANDI olarak yeniden sınıflandırıldı (2026-08-12).** Kapsama oranı bir
-*blokaj* değil, K2 saha turunun yan çıktısı olan bir *ölçüm*. Ana ekran tasarımı
-onu beklemez: oran ne çıkarsa çıksın kullanıcının sorusu aynı. Ölçümün asıl
-değeri D10 ve D20'de — yayınlanan ile gerçek arasındaki fark, kaldıraç kapısında
-masaya konacak kozun ağırlığını belirler. *Poi çürüttü, Opus kabul etti.*
+**A1 — KAPANDI (2026-08-13).** Kapsama oranı önce blokaj olmaktan çıkarıldı,
+sonra D38 ile ölçüm olarak da projeden çıkarıldı: oran ne çıkarsa çıksın
+kullanıcının sorusu aynı. Yerine geçen ölçüm precision'dır ve amacı ürün kararı
+değil ölçeklenebilirlik. D10 ve D26'nin çelişki kozu bundan etkilenmez — o koz
+orandan değil çelişki kayıtlarından doğar. *Poi çürüttü, Opus kabul etti.*
 
 **A2 — Reklam eşiği sayısı.** Madde 6 (elde tutma) konuşulduktan sonra.
 
 **A3 — KAPANDI (2026-08-12).** Poi'nin 8 maddelik listesi madde madde işlendi;
 çıktısı `PROJECT.md` §13–17. İşlenmemiş madde kalmadı.
 
-**A4 — Mevzuat teyidi:** eczane reklam yasağının "bilgilendirme" sınırı.
-Poi'nin kolunda.
+**A4 — Mevzuat teyitleri (üç ayrı soru, üçü de Poi'de).**
+Her birinin neyi bloke ettiği yazılır; cevap "hayır" gelirse ne düşeceği belli olsun.
+- **A4.1** Eczane reklam yasağının "bilgilendirme" sınırı. → Bloke ettiği:
+  §5 L1 reklam katmanı ve L5 eczane tarafı gelir. G3 ile aynı sorudur; G3 etiketi
+  `PROJECT.md` §2'de kalır, içerik burada tutulur (D35 deseni).
+- **A4.2** Sağlık hizmeti sunumunda fiyat/indirim tanıtımı sınırı. → Bloke ettiği:
+  §15 fiyat şeffaflığı katmanı.
+- **A4.3** İYS / ticari elektronik ileti kapsamı: push bildirimi kapsama giriyor mu.
+  → Bloke ettiği: §17 içerik bildirimi kategorisi (hizmet bildirimi ayrı).
+
+**A5 — KAPANDI (2026-08-12).** Ana tablo adlandırması D15 ile karara bağlandı.

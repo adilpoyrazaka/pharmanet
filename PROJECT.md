@@ -3,6 +3,13 @@
 > Bu dosya projenin tek gerçek kaynağıdır. Repo kökünde durur. Claude Code, ChatGPT
 > ve Gemini oturumlarının hepsi işe buradan başlar. Burada olmayan şey kodda olmaz.
 > Değişiklikler `decisions.md`'ye gerekçesiyle yazılır.
+>
+> **Dil kuralı (dosyanın tamamı için).** Teknik adlandırma — tablo, sütun, alan,
+> kod, commit mesajı — İngilizce. Kullanıcı arayüzü Türkçe; İngilizce arayüz
+> seçeneği var ancak İngilizce sayfalar indekslenmez (`noindex`): yerel hizmet
+> için İngilizce arama talebi yok ve ince yinelenen sayfa SEO'ya zarar verir.
+> `/tr/` ve `/en/` yönlendirme yapısı ile `hreflang` ilk günden doğru kurulur;
+> sonradan URL değiştirmek birikmiş sıralamayı yakar.
 
 ---
 
@@ -27,22 +34,18 @@ ve bu damga arayüzde gizlenmez, öne çıkarılır.
 
 ---
 
-## 2. Kararı Belirleyen Üç Gerçek
+## 2. Kararı Belirleyen Gerçekler
 
-Bunlar kısıt değil, projenin üzerine kurulduğu zemin. Hepsi ölçülebilir ve
-hepsi Faz 0'da paralel olarak ölçülür — inşaatı durdurmazlar ama yönü belirlerler.
+Bunlar kısıt değil, projenin üzerine kurulduğu zemin. İkisi de ölçülebilir ve
+inşaatı durdurmaz; yönü belirlerler. G1 Faz 0'da paralel olarak ölçülür, G2
+prosedürel kanallara bağlı olduğu için kendi takvimiyle ilerler (A4).
 
 | # | Soru | Neden hayati | Nasıl ölçülür |
 |---|---|---|---|
-| G1 | **Kapsama oranı:** her şirketin bir ilçedeki anlaşmalı eczane sayısı / o ilçedeki toplam eczane sayısı | Oran düşükse ürün bir *filtre*, yüksekse bir *doğrulama aracı*. Şema, sıralama mantığı ve ana ekran buna göre değişir | Veri hattının kendi çıktısı. Gemini kaynak envanteri + kanonik eczane kütüğü. Birkaç saatlik iş |
-| G2 | Soranların kaçında gerçekten ilaç teminatı var? | Pazarın gerçek büyüklüğü bu | Poi'nin sektör içi ağı üzerinden |
-| G3 | Eczaneler için reklam yasağı ücretli öne çıkarmayı kapatıyor mu? | Tüketici tarafındaki en bariz gelir modelini öldürebilir | Eczacı odasına yazılı soru + bir avukata 1 saatlik danışma |
+| G1 | Soranların kaçında gerçekten ilaç teminatı var? | Pazarın gerçek büyüklüğü bu | Poi'nin sektör içi ağı üzerinden |
+| G2 | Eczaneler için reklam yasağı ücretli öne çıkarmayı kapatıyor mu? | Tüketici tarafındaki en bariz gelir modelini öldürebilir | Eczacı odasına yazılı soru + bir avukata 1 saatlik danışma |
 
-> **Numaralandırma notu (D30):** `G1–G3` yalnızca bu üç gerçeğin etiketidir.
-> Gemini araştırma görevleri `R1…R7` ile numaralanır. Aynı harfi iki listede
-> kullanmak daha önce yanlış brief üretti.
-
-**G3 için ön not:** Türkiye'de eczaneler için reklam yasağı var ama "bilgilendirme"
+**G2 için ön not:** Türkiye'de eczaneler için reklam yasağı var ama "bilgilendirme"
 ile "reklam" arasında ayrım var. Nesnel bir dizin kaydı (bu eczane şu şirketle
 anlaşmalı) bilgilendirmeye yakın; **para karşılığı sıralama yükseltme** açık reklamdır.
 Yani ürünün kendisi büyük olasılıkla sorunsuz, ama gelir modelinin eczaneden gelen
@@ -190,9 +193,13 @@ sorgusu tam olarak PostGIS'in işi. Yönetilen sağlayıcı (Neon/Supabase).
 Metin arama için `pg_trgm` yeterli, ayrı arama motoru gerekmez.
 
 Her yayın kaydında zorunlu alanlar: `source_url`, `snapshot_id`,
-`first_seen_at`, `last_verified_at`, `confidence`.
+`first_seen_at`, `verified_at`, `verification_method`, `confidence`.
 
-**Ana tablo `facility`, ayrım `facility_type` (D29).** v1'de tek değerli
+`verified_at` ve `verification_method` kanonik adlardır (D8, D17).
+`confidence` bağımsız yazılmaz, `verification_method`'tan türer; D17'nin
+60 günlük tazelik eşiği `verified_at` üzerinden hesaplanır.
+
+**Ana tablo `facility`, ayrım `facility_type` (D15).** v1'de tek değerli
 (`pharmacy`). Bağlayıcı şart: her sorgu, her dbt modeli ve her bileşik index
 `facility_type = 'pharmacy'` koşulunu açıkça taşır — varsayıma bırakılmaz.
 Coğrafi sorguların bileşik index'i bu sütunla başlar.
@@ -202,7 +209,9 @@ Coğrafi sorguların bileşik index'i bu sütunla başlar.
 Sigorta listeleri eczaneyi ad + adres olarak verir; ortak bir kimlik numarası yok.
 "Aynı eczane mi?" sorusunu çözmek gerekiyor:
 
-1. Kanonik eczane kütüğü oluştur (il eczacı odası listeleri + Google Places).
+1. Kanonik eczane kütüğü oluştur — kaynak yalnızca il eczacı odası portalı
+   (D12, D20). Google Places kütüğe kayıt eklemez; koordinat, telefon ve
+   çalışma saati adayı üretir, uyuşmazlıkta bayrak açar.
 2. Ad normalizasyonu (Türkçe karakter, "Ecz." ekleri, unvan değişiklikleri).
 3. Adres ayrıştırma + coğrafi kodlama.
 4. Bulanık eşleme (trigram benzerliği + coğrafi yakınlık birlikte).
@@ -240,7 +249,7 @@ alım zamanında, çevrimdışı, çıktısı veritabanına yazılıp insan tara
 denetlenebilir şekilde çalışır. Bu kural hem maliyeti hem de "kullanıcıya
 uydurma eczane gösterme" riskini sıfırlar.
 
-### 6.7 Fiziksel veri toplama — savunulabilirliğin kaynağı
+### 6.6 Fiziksel veri toplama — savunulabilirliğin kaynağı
 
 Kazınan veri başlangıç verisidir; rakip de kazır. Sahadan toplanan veri
 **birinci elden**dir ve kopyalanması için aynı ilişki ağının kurulmasını gerektirir.
@@ -275,12 +284,22 @@ seferlik jeton yeter. Bu akış ancak platform görünür değere sahip olduğun
 anlaşması yalnızca özel sigorta şirketleriyle değil; banka sandıkları ve diğer
 kurum sağlık planları da aynı soruyu üretiyor. Şema ilk günden `institution`
 varlığı üzerine kurulur, `institution_type` alanıyla ayrılır. Sonradan
-genişletmek pahalıya patlar. (Adlandırma: D7 ek notu, 2026-08-12.)
+genişletmek pahalıya patlar (D7).
 
 **Şema sonucu (şimdi kararlaştırılır, sonra değil):** her kayıt
 `verification_method` (`chamber` / `field` / `phone` / `self_claimed` /
 `scraped`) ve `verified_at` taşır. Bu beş değer kanoniktir — `field` K2 saha
-turunun çıktısıdır ve atlanamaz (D8 ek notu). `confidence` bu alandan türetilir. Arayüz en güçlü doğrulamayı gösterir.
+turunun çıktısıdır ve atlanamaz (D8).
+
+**Yenileme sıklığı katman başınadır (D18).** Oda kütüğü aylık, kurum anlaşma
+listeleri haftalık, nöbet verisi günlük. Saha/telefon doğrulaması sıklıkla değil
+tazelik eşiğiyle yönetilir: `verified_at` üzerinden **60 gün** geçen kayıt
+"doğrulanmış" rozetini kaybeder, silinmez, tarihiyle gösterilir (D17).
+
+**Kütük tüm eczaneleri kapsar (D16).** Nöbet tutmayanlar dahil; kütük nöbet
+listesinden türetilemez. Her sayım `sayım tarihi` ile kaydedilir — 183 sayısı
+2026-08-12 anlık görüntüsüdür (Balçova-1 36, Balçova-2 17, Hatay 60,
+Mithatpaşa 37, Üçyol 33). `confidence` bu alandan türetilir. Arayüz en güçlü doğrulamayı gösterir.
 
 **Çelişki kuralı:** Şirketin yayınlanmış listesi "evet", eczane "hayır" diyorsa
 **eczanenin beyanı kazanır** — müşteriyi geri çevirecek olan o. Ama iki kayıt da
@@ -294,7 +313,7 @@ K1–K4 çalıştıkça birikir.
 **KVKK notu:** eczane bir işletmedir, verisi ticari veridir. Eczacının şahsi
 bilgisi tutulmaz — işletme tutulur, kişi tutulmaz.
 
-### 6.8 Barındırma ve gözlemlenebilirlik
+### 6.7 Barındırma ve gözlemlenebilirlik
 
 - Next.js → Vercel. Python işçi → Fly.io veya Railway. Veritabanı → Neon/Supabase.
 - Analitik → Plausible veya PostHog (KVKK açısından Google Analytics'ten temiz).
@@ -363,14 +382,13 @@ değiştirir. Bu kriterler bugün, heyecan yüksekken yazılır — çünkü son
 
 ### Faz 0 — Zemin (Hafta 1–2)
 **Paralel iki kol.**
-- Poi: G2 ve G3 (teminat yaygınlığı, mevzuat) kendi ağı ve prosedürel kanalları üzerinden.
+- Poi: G1 ve G2 (teminat yaygınlığı, mevzuat) kendi ağı ve prosedürel kanalları üzerinden.
 - Teknik: repo, `PROJECT.md`, `decisions.md`, Next.js iskeleti, Postgres+PostGIS,
-  **tek bir sigorta şirketi** için uçtan uca çalışan bir dikey dilim.
-  Bu dilimin ilk çıktısı G1 kapsama oranıdır — veri hattı onu kendisi üretir.
+  **tek bir kurum** için uçtan uca çalışan bir dikey dilim.
 
-**Çıktı:** Lokalde çalışan, tek şirket + tek ilçe için gerçek veriyle doğru cevap veren site.
-**Öldürme kriteri:** G1 sonucunda ilk 5 şirketin 4'ü veya fazlası TEB protokolüyle
-neredeyse tüm eczaneleri kapsıyorsa — tüketici ürünü olarak durdur, L1 veri ürününe pivot et.
+**Çıktı:** Lokalde çalışan, tek kurum + tek ilçe için gerçek veriyle doğru cevap veren site.
+**Öldürme kriteri:** Yok (D38). Faz 0'ın çıktısı ölçüm değil altyapıdır;
+durdurma kararı verecek bir sayı üretmez. Veri tezinin kriteri Faz 1'dedir.
 
 ### Faz 1 — Pilot: 5 bölge (Hafta 3–6)
 - Tüm kurumlar, 5 pilot bölge. Varlık eşleme modülü + insan onay ekranı.
@@ -390,10 +408,27 @@ yönlendirmiyoruz. Lokal geliştirme sürer; lokal *saklanma* sürmez.
 **Tanıtımlı açılış kapsamı:** 5 ilçe × tüm kurumlar (K4 turu bitince).
 Reklam katmanı ve il geneline yayılma bu kapsam tamamlandıktan sonra açılır.
 
+**Vaat (KİLİT, sayı değil kural — D38):** Kullanıcıya doğrulanmamış hiçbir kayıt
+doğrulanmış gibi gösterilmez. `scraped` tek başına sonuç kartında "anlaşmalı"
+ifadesini taşıyamaz; kazınmış kayıt yalnızca ayrı ve açıkça ikincil bir yüzeyde,
+"kurumun yayınlanmış listesine göre — doğrulanmadı" ibaresiyle görünür.
+Kazıma bir yayın kaynağı değil, K1–K2'nin nereye bakacağını daraltan bir
+arama alanıdır. Bu kural Faz 1'in kapsamını bilerek daraltır: yayında
+"anlaşmalı" diyebildiğimiz kayıtlar K2'de doğrulanmış olanlardır.
+
 **Çıktı:** Canlı site, ölçülen ilk gerçek kullanım.
-**Ölçüt:** 6 hafta sonunda QR'lardan haftalık tekrar eden sorgu sayısı.
-**Öldürme kriteri:** 5 eczanede 6 hafta boyunca haftalık toplam sorgu 50'nin altındaysa,
-dağıtım tezi yanlış demektir. Ürünü değil, tezi gözden geçir.
+
+**Ölçüt 1 — dağıtım:** 6 hafta sonunda QR'lardan haftalık tekrar eden sorgu sayısı.
+**Öldürme kriteri 1:** 5 eczanede 6 hafta boyunca haftalık toplam sorgu 50'nin
+altındaysa dağıtım tezi yanlış demektir. Ürünü değil, tezi gözden geçir.
+
+**Ölçüt 2 — ölçeklenebilirlik (D38):** K2 bittiğinde kazınmış `kurum × eczane`
+çiftlerinin precision'ı; yani kazınmış "evet"lerin sahada doğrulanma oranı.
+**Öldürme kriteri 2:** Precision **%50'nin altındaysa** kazıma katmanı arama
+alanını daraltmıyor demektir; her kayıt tek tek ayakla toplanır ve Faz 2'nin
+üç şehir hedefi aritmetik olarak düşer — saha öncelikli dar ürüne küçülünür.
+Recall kritere girmez: eksik eczane göstermek küçük hata, olmayan anlaşmayı
+göstermek güven vaadinin ölümüdür (§1).
 
 ### Faz 2 — Üç şehir + SEO (Ay 2–3)
 - İzmir + İstanbul + Ankara, 10+ şirket.
@@ -427,7 +462,7 @@ Burayı bugün planlamak erken; Faz 3'ün sonundaki veriyle yazılacak.
 | **Opus (yardımcı)** | Teknik yönetim, karar kaydı, diğer çıktıların denetimi, "hayır" demek | `PROJECT.md`, `decisions.md` |
 | **Claude Code (Fable)** | Mimari uygulama ve kod | repo kodu, `architecture.md` |
 | **ChatGPT** | Tasarım sistemi, arayüz akışları, marka | `design.md` |
-| **Gemini** | Kaynak envanteri, veri araştırması, doğrulanabilir tablolar | `data-sources.md` |
+| **Gemini** | Kaynak envanteri, veri araştırması, doğrulanabilir tablolar | `research/R1.md … R7.md` |
 
 **Devir teslim kuralı:** Modeller arası bilgi sohbetle değil dosyayla taşınır.
 Bir model bir karar verdiyse, o karar dosyaya yazılmadan bir sonraki adım başlamaz.
@@ -445,7 +480,6 @@ tek tıkla anlarsın.
 |---|---|---|
 | Veri bayatlar, kullanıcı yanlış eczaneye gider | Ürün ölür | Doğrulama tarihi görünür, kaynak sağlığı alarmı, teyit uyarısı |
 | Sigorta şirketi engelleme/uyarı gönderir | Kaynak kesilir | Nazik çekim, önbellek, erken temas ve ortaklık teklifi |
-| Kapsam çok geniş çıkar (G1) | Tüketici değeri düşer | L1 veri ürününe pivot |
 | Mevcut nöbetçi eczane uygulamaları özelliği kopyalar | Rekabet | Kopyalanan özellik değil veri hattı; onlar veriyi taze tutamaz |
 | Kurucu tükenmesi | Proje durur | Faz sınırları ve öldürme kriterlerine sadık kal |
 
@@ -457,24 +491,10 @@ Faz 0'ın iki kolu da bu hafta başlar:
 
 1. **Bugün:** Repoyu kur, bu dosyayı ve `decisions.md`'yi işle.
 2. **Bu hafta:** Gemini'ye kaynak envanteri görevini ver (doğrulanabilir tablo formatında).
-3. **Bu hafta:** Claude Code + Fable ile tek şirket dikey dilimi.
-4. **Dilim biter bitmez:** G1 kapsama oranını oku. Ana ekran kararı buna bağlı.
+3. **Bu hafta:** Claude Code + Fable ile tek kurum dikey dilimi.
 
-Fazlar sırayla ilerler. Faz 1'e, Faz 0'ın öldürme kriteri değerlendirilmeden geçilmez.
-
-# PROJECT.md — Ek Bölümler (13–17)
-
-> Poi'nin 8 maddelik `yapılacaklar` listesinin işlenmesinden çıkan bölümler.
-> `PROJECT.md`'nin 12. bölümünün altına eklenir.
->
-> **Dil notu:** Teknik adlandırma (tablo, sütun, alan) bu bölümden itibaren
-> İngilizce. Kullanıcı arayüzü Türkçe, İngilizce arayüz seçeneği var ancak
-> İngilizce sayfalar indekslenmez (`noindex`) — yerel hizmet için İngilizce
-> arama talebi yok, ince yinelenen sayfa üretmek SEO'ya zarar verir.
-> `/tr/` ve `/en/` yönlendirme yapısı ile `hreflang` ilk günden doğru kurulur;
-> sonradan URL değiştirmek birikmiş sıralamayı yakar.
-
----
+Fazlar sırayla ilerler. Faz 1'e geçmeden Faz 0'ın çıktısı — çalışan dikey dilim —
+alınmış olmalıdır.
 
 ## 13. Özellik Kaydı — v1
 
@@ -484,7 +504,7 @@ Fazlar sırayla ilerler. Faz 1'e, Faz 0'ın öldürme kriteri değerlendirilmede
 |---|---|
 | Açık / kapalı + kapanış saati | Listenin en üstünde. Kapalıysa görsel olarak geri plana düşer |
 | Mesafe + yürüme süresi | Varsayılan sıralama: açık olanlar önce, sonra mesafe |
-| Anlaşmalı kurum listesi | Doğrulama rozeti + `verified_at` görünür (D8) |
+| Anlaşmalı kurum listesi | Doğrulama rozeti + `verified_at` görünür (D8). `scraped` kaynaklı kayıt bu listede yer almaz; ayrı ve ikincil yüzeyde "doğrulanmadı" ibaresiyle gösterilir (D38) |
 | Ara (`tel:`) | Tek dokunuş. Güven geri dönüşü: kullanıcı teyit edebilmeli |
 | WhatsApp | **Yalnızca `whatsapp_active = true` ise.** Saha turunda doğrulanır |
 | Yol tarifi | Google / Apple / Yandex derin bağlantı. Platforma göre sıralanır |
@@ -508,7 +528,7 @@ Türkiye'de Yandex kullanımı yüksek olduğu için üçü de sunulur.
 | Yorum / puanlama | Bizi dizin sitesine çevirir; moderasyon yükü ve iftira riski; güven konumlanmasını sulandırır |
 | Randevu / rezervasyon | Kapsam dışı |
 | İlaç stok sorgulama | Eczane tarafı entegrasyon gerektirir → L5 / Veressiye alanı. Park edildi |
-| Native uygulama | Sıfır kurulum temel avantaj (D25 mantığı) |
+| Native uygulama | Sıfır kurulum temel avantaj (D31 mantığı) |
 
 ### UX kuralları (v1)
 
@@ -562,7 +582,7 @@ kullanıcıya sahipler, kurum filtresini ekleyebilirler. Onlara gitmek,
 farklılaştırıcıyı en hızlı kopyalayacak tarafa elden teslim etmektir —
 bize gereken altı ay, onlara gereken üç hafta.
 
-Aynı zamanda bu, D20'nin (Kaldıraç Kapısı) genel halidir: trafiği sıfır olan
+Aynı zamanda bu, D26'nin (Kaldıraç Kapısı) genel halidir: trafiği sıfır olan
 tarafın "ortaklık" teklifi ortaklık değil bağış talebidir.
 
 | Taraf | Kesişme | Karar |
@@ -602,7 +622,7 @@ gereklidir.
 
 **Güven.** Doktor bize yerleşim veya kupon için ödeme yaptığı an "anlaşmalı
 doktor" listesi tarafsız olmaktan çıkar. Eczanede bu bir satın alma kararıydı;
-doktorda bir **sağlık kararı**. D22 burada gevşetilmez, sıkılaştırılır.
+doktorda bir **sağlık kararı**. D28 burada gevşetilmez, sıkılaştırılır.
 
 **Ters seçilim.** Seansına indirim vermeye razı doktor, ortalamada takvimi boş
 olan doktordur. Kupon katmanı sistematik olarak talep görmeyeni öne çıkarır.
@@ -620,7 +640,7 @@ Doktor, hastane, laboratuvar ve görüntüleme düğümlerinin sisteme dahil edi
 Poi'nin kararıyla en sona, ayrı bakılacak alt kategori olarak bırakıldı.
 Odak: ürün kalitesi, veri doğruluğu, pazar analizi, stratejik eğilimler.
 
-**Genişleme park edilse de adlandırma kancası karara bağlandı (D29,
+**Genişleme park edilse de adlandırma kancası karara bağlandı (D15,
 2026-08-12):** ana tablo `pharmacy` değil `facility` + `facility_type`.
 Genişleme hiç yapılmasa kayıp yok; yapılırsa göç yazmaktan kurtarır.
 `facility_type` v1'de tek değerli kalır ve filtre her sorguda açıkça yazılır.
@@ -634,7 +654,7 @@ dizin sitelerinin trafik büyüklüğü, reçete hacmi.
 ## 16. Elde Tutma ve Faydalı Bilgi Katmanı
 
 Kurum filtresi yılda 2–4 kez kullanılan bir özelliktir. Trafik birikmezse reklam
-katmanı açılmaz, kaldıraç kapısı (D20) açılmaz, veri ürünü satılmaz. Bu bölüm
+katmanı açılmaz, kaldıraç kapısı (D26) açılmaz, veri ürünü satılmaz. Bu bölüm
 iş modelinin darboğazını çözer.
 
 ### Temel kural: araç, makale değil
@@ -693,7 +713,7 @@ Hedef, kitlenin anlamlı bir kesitini "yılda 2 kez"den "ayda bir civarı"na ta�
 Bunu yapacak olan nöbetçi eczane ve ilaç araçlarıdır. Bu araçların SEO yüzeyi,
 elde tutma etkisinden daha değerli olabilir — ikisi de hedeflenir.
 
-**Ölçüt:** 30 günlük geri dönen ziyaretçi oranı. Reklam eşiği (D24) bu orana
+**Ölçüt:** 30 günlük geri dönen ziyaretçi oranı. Reklam eşiği (D30) bu orana
 bakılarak belirlenecek.
 
 ---
@@ -761,6 +781,6 @@ Editoryal politika aynen uygulanır.
 
 ### Zamanlama
 
-Sosyal medya tanıtımdır; D25 gereği tanıtımlı açılışta başlar.
+Sosyal medya tanıtımdır; D31 gereği tanıtımlı açılışta başlar.
 **Ancak kullanıcı adları bugün alınır** — handle kapılması geri dönüşü olmayan
 bir kayıptır. Hesaplar boş dursun, isim elimizde olsun.
