@@ -272,9 +272,10 @@ temsilcileri zaten her eczaneyi düzenli ziyaret ediyor; dağıtım kanalı kuru
 kullanılır. Stant değil **sticker** — tezgaha yapışır, yer kaplamaz, reddedilme
 eşiği düşük. Her sticker'a ayrı takip etiketi.
 
-**K4 — Telefon turu: en kalabalık 5 ilçe.** Pilot tamamlandıktan sonra veri
-toplama ölçeği buraya genişler. Bu tur bittiğinde kapsam "bir ilçe iki kurum"
-değil, **5 ilçe × tüm kurumlar** olur.
+**K4 — Telefon turu: kalan İzmir bölgeleri.** Pilot tamamlandıktan sonra veri
+toplama ölçeği buraya genişler. Tur bölge bölge ilerler; bir bölge %80 doğrulama
+kapısını geçtiğinde tanıtıma açılır (D43). Telefon doğrulaması D8'de kanonik bir
+yöntemdir (`phone`) ve saha turundan çok daha ucuzdur.
 
 **K5 — Eczacı sahiplenme akışı (en son).** Eczane tek kullanımlık bağlantıyla
 kendi kaydını düzeltir, "doğrulanmış" rozeti alır. Hesap sistemi yok, tek
@@ -412,8 +413,9 @@ Gerekçe: arama motorunda sıralama, alan adının yaşı ve tarama geçmişiyle
 bu geri alınamaz. Buna karşılık itibar riski yok, çünkü henüz kimseyi
 yönlendirmiyoruz. Lokal geliştirme sürer; lokal *saklanma* sürmez.
 
-**Tanıtımlı açılış kapsamı:** 5 ilçe × tüm kurumlar (K4 turu bitince).
-Reklam katmanı ve il geneline yayılma bu kapsam tamamlandıktan sonra açılır.
+**Tanıtımlı açılış:** bölge bölge. Bir oda bölgesi %80 doğrulama kapısını
+geçtiğinde o bölge tanıtıma açılır (D43); reklam katmanı ve il geneline yayılma
+bunun arkasındadır.
 
 **Vaat (KİLİT, sayı değil kural — D38):** Kullanıcıya doğrulanmamış hiçbir kayıt
 doğrulanmış gibi gösterilmez. `scraped` tek başına sonuç kartında "anlaşmalı"
@@ -437,8 +439,8 @@ alanını daraltmıyor demektir; her kayıt tek tek ayakla toplanır ve Faz 2'ni
 Recall kritere girmez: eksik eczane göstermek küçük hata, olmayan anlaşmayı
 göstermek güven vaadinin ölümüdür (§1).
 
-### Faz 2 — Üç şehir + SEO (Ay 2–3)
-- İzmir + İstanbul + Ankara, 10+ kurum.
+### Faz 2 — İzmir doygunluğu + SEO (Ay 2–3)
+- Tüm İzmir bölgeleri, tüm kurumlar. K4 telefon turu bölge bölge ilerler.
 - Programatik SEO sayfaları (kurum × il × ilçe), sitemap, yapılandırılmış veri.
   URL yapısı `institution` varlığı üzerine kurulur (D7); sonradan değiştirmek
   birikmiş sıralamayı yakar.
@@ -448,8 +450,8 @@ göstermek güven vaadinin ölümüdür (§1).
 **Öldürme kriteri:** 3 ay sonunda organik arama trafiği ihmal edilebilir düzeydeyse
 SEO motoru çalışmıyor demektir; tek motorlu (fiziksel dağıtım) bir işe küçül.
 
-### Faz 3 — Ulusal + ilk gelir (Ay 4–6)
-- Kapsamı ulusala çıkar.
+### Faz 3 — İstanbul + Ankara ve ilk gelir (Ay 4–6)
+- Kapsam İstanbul ve Ankara'ya çıkar — kanıtlanmış oyun kitabıyla, deneyerek değil.
 - L2 çapraz trafik ortaklıkları: sigorta/TSS karşılaştırma siteleri, doktor ve
   hastane dizinleri, kurumsal İK portalları (§15). Veri kalitesi raporu bu
   görüşmelerin materyalidir.

@@ -103,10 +103,8 @@ Kurumun listesi "evet", eczane "hayır" diyorsa eczane kazanır — müşteriyi 
 masaya konacak en güçlü koz. Kendiliğinden birikir. *Opus.*
 
 **D11 — Veri toplama sırası: K1 oda portalı → K2 saha (5 bölge/183 eczane, yüz yüze,
-telefon dahil) → K3 depo temsilcileri + QR sticker → K4 en kalabalık 5 ilçe telefon
-turu → K5 eczacı sahiplenme akışı.** KİLİT
-İlk taslak kaldıraca göre sıralanmıştı ve yanlıştı: eczacı, görmediği bir platformun
-formunu doldurmaz. Sahiplenme akışı en sona iner. *Poi düzeltti.*
+telefon dahil) → K3 depo temsilcileri + QR sticker → K4 kalan İzmir bölgeleri
+telefon turu → K5 eczacı sahiplenme akışı.** KİLİT
 
 **D12 — Kanonik eczane kütüğü İzmir Eczacı Odası portalından.** KİLİT
 Erişim mevcut. Varlık eşlemenin (6.4) en zor sorusu — referans taraf nereden gelecek —
@@ -251,12 +249,14 @@ birikir — geç açılan site trafiği değil olgunlaşmayı kaybeder, o telafi
 İtibar riski yok çünkü kimse yönlendirilmiyor. *Poi "önce lokalde bitirelim" dedi,
 ikiye ayırarak uzlaşıldı.*
 
-**D32 — Tanıtımlı açılış kapsamı: 5 ilçe × tüm kurumlar.** KİLİT
-K4 turu bittikten sonra. Reklam ve il geneline yayılma bunun arkasında. *Poi.*
+**D32 — Tanıtımlı açılış bölge bölge yapılır.** KİLİT
+Kapsam "5 ilçe × tüm kurumlar" değil: bir oda bölgesi %80 doğrulama kapısını
+geçtiğinde (D43) o bölge tanıtıma açılır. Reklam ve il geneline yayılma bunun
+arkasındadır. *Poi.*
 
 **D33 — Genişleme kapısı takvim değil veri kalitesi.** KİLİT
 Coğrafi hız kopyalanmaya karşı korumaz; savunma doğrulanmış eczane ağı, veri
-tazeliği ve güven. Pipeline sağlamsa üç şehir zaten bir hafta sürer; sağlam
+tazeliği ve güven. Pipeline sağlamsa üç şehir zaten bir hafta sürer; Pipeline sağlamsa yeni bölge çekmek zaten bir haftalık iştir; sağlam
 değilken açılmak tek varlığımızı yakar. *Opus, Poi kabul etti.*
 
 **D34 — Devir teslim dosyayla, sohbetle değil.** KİLİT
@@ -359,6 +359,49 @@ D10'un çelişki veri seti de K1–K4 çalıştıkça büyür. Kapıyı erken a�
 koruduğu kozu zayıflatır. Kapı kontrolü Faz 3'ün sonunda yapılır.
 *Opus yakaladı, Poi onayladı.*
 
+**D43 — Yürütme birimi oda bölgesidir; tanıtım kapısı bölge bazlı %80 doğrulamadır.** KİLİT
+Genişleme, doğrulama ve tanıtım **bölge** birimiyle yürür. İlçe yalnızca yayın
+birimidir: programatik SEO URL'leri `kurum × il × ilçe` kalır, çünkü kullanıcı
+"Karşıyaka" diye arar, "Üçyol bölgesi" diye değil. İkisi karıştırılmaz —
+**ilçe yayın birimi, bölge yürütme birimi.**
+
+Gerekçe: bölge niteliğini oda portalı zaten veriyor (D19), yani kütükte bedava.
+İlçe ise adres ayrıştırmadan türetilir ve sınırda hata verir; D19 zaten ikisinin
+birbirine çevrilemediğini kilitlemişti. Plan bugüne kadar Faz 1'i bölgeyle,
+tanıtımlı açılışı ilçeyle tanımlıyordu — "K2 bitti, açılışa hazır mıyız" sorusu
+hesaplanamaz haldeydi. Depo temsilcisi ağının çalışma birimi de idari ilçe değil
+güzergâhtır; bölge ona daha yakın.
+
+**Sıra.** 5 pilot bölge lokalde doğrulanır (kurum eşleştirme mantığının çalıştığı
+burada görülür) → tüm İzmir kütüğü sisteme çekilir ve D31 uyarınca sessiz yayına
+girer → K4 telefon turu bölge bölge doğrular → bir bölge kapıyı geçtiğinde o
+bölge tanıtıma açılır.
+
+**D31 ile uzlaşma.** "Önce lokalde bitir" ile "erken yayınla" çelişmiyor, çünkü
+D31'in derdi ürün olgunluğu değil alan adının yaşı ve tarama geçmişi. Alan adı
+bugün alınır, saat orada başlar. Kanonik kütük ilk günden tüm İzmir'i kapsar ve
+eczane sayfaları kurum eşleşmesi olmadan da indekslenebilir. Lokalde tutulan tek
+şey doğrulanmamış kurum filtresidir — o zaten yayınlanmıyor (D38).
+
+**Tanıtım kapısı: bölgedeki eczanelerin %80'i `phone` veya `field` ile
+doğrulanmış olmalı.** Ölçü birimi eczanedir, `kurum × eczane` çifti değil: tek
+telefon görüşmesi o eczanenin kurum listesinin tamamını doğrular, çift üzerinden
+saymak aynı işi kurum sayısıyla çarpar. Payda K1 dışa aktarımından gelir.
+
+Eşik neden İzmir geneli değil bölge bazlı: D17 rozeti 60 günde düşürüyor. Tek bir
+il geneli eşik konsaydı, tur 60 günü aştığı anda ilk aranan bölgeler sen bitirmeden
+rozeti kaybederdi ve oran hiç %80'e ulaşmazdı — kovalanan hedef. Bölge bazlı
+eşikte 60 günlük saat bölge başına işler, tanıtım daha erken başlar ve ilk bölgede
+öğrenilen sonrakine girer.
+
+**Borç kuralı:** açılmış bir bölge %80'in altına düşerse tanıtımı durdurulmaz,
+ama **yeni bölge açılmaz.** Aksi halde doğrulama borcu birikir ve hiçbir bölge
+taze kalmaz.
+
+Kabul edilen maliyet: kapsama haritası bir süre delikli olur. Açılmamış bölgedeki
+kullanıcı sonuç görür ama çoğu "doğrulanmadı" yüzeyinde kalır. Alternatifi
+D38'in vaadini çiğneyerek tüm İzmir'i tanıtmaktı.
+*Poi karar verdi (birim, sıra, %80); bölge bazlı eşik ve borç kuralı Opus.*
 ---
 
 ## Açık — karara bağlanmadı
