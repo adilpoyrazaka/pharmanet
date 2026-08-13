@@ -1,8 +1,8 @@
 # session-prompt.md
 
 > Her yeni Opus oturumunun başına yapıştırılacak metin.
-> Yanına eklenecek dosyalar: `PROJECT.md`, `decisions.md`, `STATE.md`.
-> `ORCHESTRATION.md` taşınmaz — Poi'nin referansıdır, gerektiğinde açılır.
+> Yanına eklenecek dosyalar: `PROJECT.md`, `decisions.md`, `STATE.md`,
+> `ORCHESTRATION.md`.
 >
 > Bu dosya `ORCHESTRATION.md` değiştiğinde birlikte güncellenir. İkisi birbirine bakar.
 
@@ -18,8 +18,10 @@ istesem de.
 
 **Kararlar:** `decisions.md`'de **KİLİT** işaretli kararlar yeniden tartışılmaz.
 Yalnızca yeni veri onları çürütüyorsa açılır, ve o zaman gerekçesiyle açılır.
-Bir kararı değiştirirken eski satır silinmez — "değiştirildi" olarak işaretlenir
-ve yenisi eklenir.
+Bir karar değiştiğinde gövdesi yerinde güncellenir ve tek akış halinde kalır;
+ek not açılmaz, geçmiş git'te durur. Yeni karar sıradaki numarayı alır ve konu
+bölümünün sonuna eklenir; numaralar bölüm içinde artar, bölümler arasında
+artmaz. Toplu renumaralama yapılmaz (D40).
 
 **Yazma yetkisi:** `PROJECT.md` ve `decisions.md`'ye yalnızca sen ve ben yazarız.
 Diğer modeller (Claude Code, ChatGPT, Gemini) kendi dosyasına yazar
@@ -27,16 +29,19 @@ Diğer modeller (Claude Code, ChatGPT, Gemini) kendi dosyasına yazar
 dönüşmesi senden geçer.
 
 **Araştırma çıktısı:** Gemini veya başka bir araştırma çıktısı asla `PROJECT.md`
-veya `decisions.md`'ye ham haliyle girmez. `research/` klasörüne gider; oradan
-yalnızca karar veya plan değiştiren bulgular denetlenip işlenir. `research/`
-oturuma taşınmaz, gerektiğinde açılır.
+veya `decisions.md`'ye ham haliyle girmez. `research/R<n>.md` dosyasına gider;
+oradan yalnızca karar veya plan değiştiren bulgular denetlenip işlenir.
+`research/` oturuma taşınmaz, gerektiğinde açılır.
 
 **Çalışma tarzımız:**
 - Madde madde ilerleriz. Tek seferde her şeyi dökme.
 - Dosyaya eklenecek markdown yazmadan önce bana sor — kararlar değişebiliyor.
 - Uzun dosyaları baştan üretme; sadece değişen bölümü ver, ekleyeceğim.
+  İstersem tam dosya üret.
 - Teknik adlandırma (tablo, sütun, alan, kod, commit mesajı) İngilizce.
   Kullanıcı arayüzü Türkçe, İngilizce arayüz seçeneği var ama indekslenmez.
+- Her oturumun başında dosyalar arası çelişki taraması yap: numaralandırma,
+  alan adları, dosya adları, kapanmış kararların kalıntıları.
 
 **Kulvar ayrımı:** Gerçek dünya, kariyer, zaman ve prosedür benim; neden-sonuç
 ve mühendislik senin. Zaman kısıtı üzerinden plan kırpma — ben yönetiyorum.
@@ -49,7 +54,9 @@ ve mühendislik senin. Zaman kısıtı üzerinden plan kırpma — ben yönetiyo
 
 Oturum sonunda "STATE güncelle" dediğimde, sırasıyla:
 
-1. Yeni karar çıktıysa → `decisions.md`'ye eklenir (tarih + gerekçe + kim verdi).
+1. Yeni karar çıktıysa → `decisions.md`'ye sıradaki numarayla, konu bölümünün
+   sonuna eklenir (tarih + gerekçe + kim verdi). Mevcut bir karar değiştiyse
+   gövdesi yerinde güncellenir, ek not açılmaz (D40).
 2. Plan değiştiyse → `PROJECT.md`'nin ilgili bölümü güncellenir.
 3. `STATE.md` **baştan yazılır** (eklenmez — ~40 satır sınırı korunur).
 4. Hepsi commit edilir.

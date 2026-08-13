@@ -1,8 +1,10 @@
 # Karar Kaydı
 
 > Her karar: ne, neden, kim verdi. Gerekçesi kaybolan karar ilk zorlukta yeniden açılır.
-> Bir kararı değiştirmek için satır silinmez — yeni satır eklenir ve eskisi
-> "değiştirildi" olarak işaretlenir.
+> Bir karar değiştiğinde gövdesi yerinde güncellenir ve tek akış halinde kalır;
+> eski hali git geçmişindedir. Yeni karar sıradaki numarayı alır ve konu
+> bölümünün sonuna eklenir — numaralar bölüm içinde artar, bölümler arasında
+> artmaz.
 
 Durum kodları: **KİLİT** = yeniden tartışılmaz · **AÇIK** = veri bekliyor
 
@@ -280,6 +282,17 @@ kuralı Opus, eşik Poi.*
 olduğu için slug eklenmez — `research/R1.md` … `research/R7.md`. Sonraki turlar
 aynı dosyaya tarihli başlıkla **eklenir**, yeni dosya açılmaz; bir görevin tüm
 turları yan yana okunur. `data-sources.md` adı bırakıldı. *Poi.*
+
+**D40 — Karar kaydının bakım kuralı: yerinde güncelleme, bölüm içi artan numara.** KİLİT
+Önceki kural "satır silinmez, yenisi eklenir" idi ve iki sorun üretti: her
+değişiklik bir ek not doğurduğu için kararlar parçalanıp okunmaz hale geldi,
+ve numaralar bölümler arasında karıştı. Yeni kural: karar değiştiğinde gövdesi
+yerinde güncellenir, ek not açılmaz; kaydın geçmişi dosyada değil git'te tutulur,
+çünkü orada tarih, yazar ve fark zaten var. Yeni karar sıradaki numarayı alır ve
+konu bölümünün sonuna girer; numaraların bölümler arasında artması beklenmez —
+o beklenti her yeni kararda toplu renumaralama gerektirirdi ve renumaralama eski
+oturumlardaki atıfları geçersiz kılar. *Poi renumaralamayı istedi, kuralın
+sürdürülebilir hali Opus.*
 
 ---
 

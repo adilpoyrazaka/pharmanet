@@ -9,8 +9,9 @@ Dört modelle ve çok oturumla çalışmanın kuralları.
 | Katman | Dosya | Değişim | Kim yazar |
 |---|---|---|---|
 | Plan | `PROJECT.md` | Yavaş | Opus |
-| Gerekçe | `decisions.md` | Yavaş, ekleme | Opus + Poi |
+| Gerekçe | `decisions.md` | Yavaş, yerinde güncelleme | Opus + Poi |
 | Durum | `STATE.md` | Her oturum, **baştan yazılır** | Opus |
+| Süreç | `ORCHESTRATION.md` + `session-prompt.md` | Nadiren, ikisi birlikte | Opus + Poi |
 | Ham girdi | `research/R<n>.md` | Ekleme | Gemini çıktısı, olduğu gibi |
 | Teknik | `architecture.md` | Orta | Claude Code + Fable |
 | Tasarım | `design.md` | Orta | ChatGPT |
@@ -32,7 +33,7 @@ Gemini çıktısı  →  research/R1.md  (ham, olduğu gibi, dokunulmadan)
                         ↓
                    Opus denetler
                         ↓
-   karar değiştiren bulgular  →  decisions.md  (yeni karar veya değişen karar)
+   karar değiştiren bulgular  →  decisions.md  (yeni karar veya güncellenen karar)
    plan değiştiren bulgular   →  PROJECT.md    (ilgili bölüm güncellenir)
                         ↓
                    STATE.md güncellenir
@@ -50,10 +51,13 @@ yapmaya başlar ve token yakar.
 
 | Model | Verilecek | Verilmeyecek |
 |---|---|---|
-| **Opus (yardımcı)** | `PROJECT.md` + `decisions.md` + `STATE.md` | — (tam bağlam gerekli) |
+| **Opus (yardımcı)** | `PROJECT.md` + `decisions.md` + `STATE.md` + `ORCHESTRATION.md` | — (tam bağlam gerekli) |
 | **Claude Code + Fable** | Repo erişimi + `architecture.md` + `PROJECT.md` §6 | İş modeli, ortaklık, sosyal medya |
 | **ChatGPT (tasarım)** | `PROJECT.md` §3, §7, §13 + `design.md` | Veri hattı, mimari, gelir modeli |
 | **Gemini (araştırma)** | Sadece görev brief'i | Strateji — verirsen yorum yapmaya başlar |
+
+`ORCHESTRATION.md` Opus'a taşınır: dosyalar arası çelişkileri ancak süreç
+kurallarını gören taraf yakalayabilir.
 
 ---
 
@@ -67,7 +71,18 @@ Sebep: dört model aynı dosyaya yazarsa çelişkiler oluşur ve kimse fark etme
 
 ---
 
-## 5. Oturum promptu ve kapanış ritüeli
+## 5. Karar kaydının bakımı (D40)
+
+- Karar değiştiğinde gövdesi **yerinde güncellenir**; ek not açılmaz.
+  Kaydın geçmişi dosyada değil git'te tutulur.
+- Yeni karar sıradaki numarayı alır ve **konu bölümünün sonuna** girer.
+- Numaralar bölüm içinde artar, bölümler arasında artmaz.
+- Toplu renumaralama yapılmaz: eski oturumlardaki ve commit mesajlarındaki
+  atıfları geçersiz kılar.
+
+---
+
+## 6. Oturum promptu ve kapanış ritüeli
 
 → `session-prompt.md`
 
@@ -76,7 +91,7 @@ Açılış promptu ve kapanış ritüeli orada. Bu dosya değişirse
 
 ---
 
-## 6. Poi'nin kendi kulvarı
+## 7. Poi'nin kendi kulvarı
 
 Modellere devredilmeyen, yalnızca sende olan işler:
 saha turu ve eczane ilişkileri, oda portalı verisi, mevzuat teyitleri (A4),

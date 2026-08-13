@@ -89,7 +89,7 @@ farklı UTM etiketi ver ki hangi noktanın çalıştığını ölçebilesin.
 ### Motor B: Programatik SEO
 
 "Allianz anlaşmalı eczane Karşıyaka" tipi long-tail aramalar bugün vasat
-içerik siteleri tarafından karşılanıyor. Şirket × il × ilçe kombinasyonu
+içerik siteleri tarafından karşılanıyor. Kurum × il × ilçe kombinasyonu
 on binlerce gerçek, faydalı sayfa demek.
 
 **Bu yüzden Streamlit reddedilmesi doğru bir karardı** — sunucu tarafı
@@ -142,7 +142,7 @@ gerektirir. Lisanslı bir acenteyle ortaklık kurmadan bu kapıya girme.
 
 **En güçlü varlık ürün değil, veri.** Türkiye genelinde eczane–sigorta ağ
 ilişkisinin temiz, tarihli, coğrafi kodlanmış bir veri kümesi kamuya açık
-olarak mevcut değil. Zaman içinde "hangi şirket ağını nerede genişletiyor"
+olarak mevcut değil. Zaman içinde "hangi kurum ağını nerede genişletiyor"
 sorusunun cevabı da sende birikir. Bunun alıcısı vardır.
 
 ---
@@ -272,7 +272,7 @@ kullanılır. Stant değil **sticker** — tezgaha yapışır, yer kaplamaz, red
 eşiği düşük. Her sticker'a ayrı takip etiketi.
 
 **K4 — Telefon turu: en kalabalık 5 ilçe.** Pilot tamamlandıktan sonra veri
-toplama ölçeği buraya genişler. Bu tur bittiğinde kapsam "bir ilçe iki şirket"
+toplama ölçeği buraya genişler. Bu tur bittiğinde kapsam "bir ilçe iki kurum"
 değil, **5 ilçe × tüm kurumlar** olur.
 
 **K5 — Eczacı sahiplenme akışı (en son).** Eczane tek kullanımlık bağlantıyla
@@ -377,8 +377,9 @@ gradyan kahraman bölümü, stok illüstrasyon.
 
 ## 9. Faz Planı
 
-Her fazın bir **öldürme kriteri** var. Kriter tetiklenirse proje durur veya yön
-değiştirir. Bu kriterler bugün, heyecan yüksekken yazılır — çünkü sonra yazılmaz.
+Ölçüm üreten her fazın bir **öldürme kriteri** var. Kriter tetiklenirse proje
+durur veya yön değiştirir. Bu kriterler bugün, heyecan yüksekken yazılır — çünkü
+sonra yazılmaz. Faz 0'ın kriteri yoktur: çıktısı ölçüm değil altyapıdır.
 
 ### Faz 0 — Zemin (Hafta 1–2)
 **Paralel iki kol.**
@@ -431,8 +432,10 @@ Recall kritere girmez: eksik eczane göstermek küçük hata, olmayan anlaşmay�
 göstermek güven vaadinin ölümüdür (§1).
 
 ### Faz 2 — Üç şehir + SEO (Ay 2–3)
-- İzmir + İstanbul + Ankara, 10+ şirket.
-- Programatik SEO sayfaları (şirket × il × ilçe), sitemap, yapılandırılmış veri.
+- İzmir + İstanbul + Ankara, 10+ kurum.
+- Programatik SEO sayfaları (kurum × il × ilçe), sitemap, yapılandırılmış veri.
+  URL yapısı `institution` varlığı üzerine kurulur (D7); sonradan değiştirmek
+  birikmiş sıralamayı yakar.
 - Eczane sahiplenme akışı: eczacı kendi kaydını doğrulasın (veri kalitesi + ilişki).
 
 **Ölçüt:** Organik trafiğin QR trafiğini geçtiği hafta.
@@ -458,8 +461,9 @@ Burayı bugün planlamak erken; Faz 3'ün sonundaki veriyle yazılacak.
 
 | Kim | Sorumluluk | Sahip olduğu dosya |
 |---|---|---|
-| **Poi** | Saha verisi, karar, gerçek dünya yürütmesi, dağıtım | `brief.md` |
-| **Opus (yardımcı)** | Teknik yönetim, karar kaydı, diğer çıktıların denetimi, "hayır" demek | `PROJECT.md`, `decisions.md` |
+| **Poi** | Saha verisi, karar, gerçek dünya yürütmesi, dağıtım | — (çıktısı `STATE.md`'ye girer) |
+| **Opus (yardımcı)** | Teknik yönetim, karar kaydı, diğer çıktıların denetimi, "hayır" demek | `PROJECT.md`, `decisions.md`, `STATE.md` |
+| **Poi + Opus (birlikte)** | Süreç kuralları ve oturum düzeni | `ORCHESTRATION.md`, `session-prompt.md` |
 | **Claude Code (Fable)** | Mimari uygulama ve kod | repo kodu, `architecture.md` |
 | **ChatGPT** | Tasarım sistemi, arayüz akışları, marka | `design.md` |
 | **Gemini** | Kaynak envanteri, veri araştırması, doğrulanabilir tablolar | `research/R1.md … R7.md` |

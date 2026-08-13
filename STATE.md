@@ -10,14 +10,15 @@ Faz 0 — Zemin. Henüz kod yazılmadı.
 
 ## Tamamlanan
 - `PROJECT.md` bölüm 1–17 yazıldı.
-- `decisions.md` — D1–D39 kilitli karar, A1–A5 açık kayıt. A1, A3, A5 kapandı.
+- `decisions.md` — D1–D40 kilitli karar, A1–A5 açık kayıt. A1, A3, A5 kapandı.
 - Repo kuruldu: github.com/adilpoyrazaka/pharmanet. `.gitattributes` ile satır
   sonu normalize edildi; commit kimliği düzeltildi.
 - Pilot bölge sayıları alındı (183, 2026-08-12 sayımı).
 - Senkron denetimi 2026-08-13: alan adı çakışması, kapsama oranı kalıntıları,
   Places'in kanonik kütükteki yeri, Gemini dosya adının üç varyantı, A4'ün eksik
-  iki maddesi kapatıldı. Karar numaraları D1–D39 olarak baştan sıralandı; eski
-  oturumlardaki D numaraları artık geçerli değildir.
+  iki maddesi kapatıldı. Karar numaraları baştan sıralandı; eski oturumlardaki
+  D numaraları artık geçerli değildir. Bakım kuralı D40'ta: yerinde güncelleme,
+  bölüm içi artan numara, toplu renumaralama yok.
 
 ## Şu an devam eden
 - **K1 — oda portalından kanonik kütüğün çekilmesi.** Sıradaki gerçek iş.
