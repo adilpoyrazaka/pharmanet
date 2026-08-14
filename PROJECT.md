@@ -172,11 +172,16 @@ karmaşıklık da eklenmez.
 ### 6.2 Veri hattı (ayrı servis, Python)
 
 ```
-Playwright ile çekim  →  ham HTML anlık görüntüsü (obje depolama, denetim izi)
+Ham girdi — iki biçim:
+  · K1 bootstrap (bir defalık): portaldan elle yapıştırılan metin,
+    dokunulmadan saklanır (D12)
+  · Süreklilik (aylık): Playwright ile çekim → ham HTML anlık görüntüsü
         ↓
   Ayrıştırma (kaynak başına parser)
         ↓
-  Normalizasyon  →  varlık eşleme  →  coğrafi kodlama
+  Satır indirgeme — kişi satırı → tesis; adressiz satır ve kişi alanı düşer (D47)
+        ↓
+  Normalizasyon → varlık eşleme → bölge ataması (D48) → coğrafi kodlama
         ↓
   dbt modelleri (staging → intermediate → marts)
         ↓
@@ -213,11 +218,14 @@ Coğrafi sorguların bileşik index'i bu sütunla başlar.
 Sigorta listeleri eczaneyi ad + adres olarak verir; ortak bir kimlik numarası yok.
 "Aynı eczane mi?" sorusunu çözmek gerekiyor:
 
-1. Kanonik eczane kütüğü oluştur — kaynak yalnızca il eczacı odası portalı
-   (D12, D20). Google Places kütüğe kayıt **ekleyemez**; yalnızca koordinat
-   adayı üretir ve oda kaydıyla uyuşmadığında bayrak açar. Telefon oda
-   kütüğünden ve K2/K4 turlarından, çalışma saati D45'in kural tablosundan
-   gelir.
+1. Kanonik eczane kütüğü oluştur — tek otorite İzmir Eczacı Odası'dır (D12, D20).
+   Bölge eşlemesi girişli portaldan bir defalık gelir; süreklilik odanın kamuya
+   açık üye listesinden. Gelen satırlar önce tesise indirgenir ve kişi alanı
+   düşürülür (D47); bölgesiz yeni kayıtlara bölge `mahalle → bölge` tablosundan
+   atanır, mahalle bilinmiyorsa kayıt kuyruğa düşer (D48). Google Places kütüğe
+   satır **ekleyemez**; yalnızca koordinat adayı üretir ve uyuşmazlıkta bayrak
+   açar. Telefon oda listesinden ve K2/K4 turlarından, çalışma saati D45'in
+   kural tablosundan gelir.
 2. Ad normalizasyonu (Türkçe karakter, "Ecz." ekleri, unvan değişiklikleri).
 3. Adres ayrıştırma + coğrafi kodlama.
 4. Bulanık eşleme (trigram benzerliği + coğrafi yakınlık birlikte).
@@ -262,10 +270,13 @@ Kazınan veri başlangıç verisidir; rakip de kazır. Sahadan toplanan veri
 Beş katman, **gerçek dünyada işleyen sırayla** (kaldıraç sırasıyla değil —
 sahiplenme akışı en sona iner, çünkü eczacı görmediği bir platformun formunu doldurmaz):
 
-**K1 — İzmir Eczacı Odası portalı (erişim mevcut).** Eczane portalı üzerinden
-yasal veri erişimi zaten var. Kanonik eczane kütüğünün temeli burası — satın
-alınacak, kazınacak veya tahmin edilecek bir şey değil. Varlık eşlemenin
-referans tarafı bu kütüktür.
+**K1 — İzmir Eczacı Odası (erişim mevcut).** Kütüğün tek otoritesi bu kurumdur
+ve iki yüzeyi vardır (D20). Girişli portal **bir defalık bootstrap**'tir:
+eczane → oda bölgesi eşlemesi oradan alınır, dışa aktarım olmadığı için bölge
+bölge kopyalanır ve ham metin dokunulmadan saklanır. Süreklilik odanın kamuya
+açık üye listesinden aylık scraper ile gelir. Portal sürekli kaynak değildir:
+kişisel kimlik verisi taşır (§6.6 KVKK notu) ve ürünün tazeliğini bir erişim
+iznine bağlar (D12).
 
 **K2 — Pilot: 5 bölge, 183 eczane, yüz yüze.** Kendi bölgesi + çevredeki
 4 bölge. Her eczaneyle tek tek görüşme; telefon araması bu turun parçası,
@@ -308,12 +319,11 @@ yönetilir: `verified_at` üzerinden **60 gün** geçen kayıt "doğrulanmış"
 rozetini kaybeder, silinmez, tarihiyle gösterilir (D17).
 
 **Kütük tüm eczaneleri kapsar (D16).** Nöbet tutmayanlar dahil; kütük nöbet
-listesinden türetilemez. Bölge sayıları şemada bir alan değildir: her oda
-dışa aktarımı `snapshot_id` ve `fetched_at` ile saklanır (D14, §6.3), sayım
-o snapshot üzerinde bir `COUNT` sorgusudur. Sayıyı sütuna yazmak ilk aylık
-tazelemede sessizce bayatlayan bir kopya üretir. 183 rakamı 2026-08-12
-snapshot'ının çıktısıdır (Balçova-1 36, Balçova-2 17, Hatay 60,
-Mithatpaşa 37, Üçyol 33).
+listesinden türetilemez. Bölge sayıları şemada bir alan değildir: her çekim
+`snapshot_id` ve `fetched_at` ile saklanır (D14, §6.3), sayım o snapshot
+üzerinde bir `COUNT` sorgusudur. Sayıyı sütuna yazmak ilk aylık tazelemede
+sessizce bayatlayan bir kopya üretir. 183 rakamı 2026-08-12 snapshot'ının
+çıktısıdır (Balçova-1 36, Balçova-2 17, Hatay 60, Mithatpaşa 37, Üçyol 33).
 
 **Çelişki kuralı:** Şirketin yayınlanmış listesi "evet", eczane "hayır" diyorsa
 **eczanenin beyanı kazanır** — müşteriyi geri çevirecek olan o. Ama iki kayıt da
@@ -413,7 +423,8 @@ durdurma kararı verecek bir sayı üretmez. Veri tezinin kriteri Faz 1'dedir.
 ### Faz 1 — Pilot: 5 bölge (Hafta 3–6)
 - Tüm kurumlar, 5 pilot bölge. Varlık eşleme modülü + insan onay ekranı.
 - Tasarım uygulaması.
-- K1 oda portalı kütüğü + K2 saha turu (183 eczane, yüz yüze).
+- K1: portal bootstrap'i (eczane → bölge eşlemesi) + kamuya açık listenin ilk
+  tam çekimi. K2 saha turu (183 eczane, yüz yüze).
 - K3: depo temsilcileri üzerinden QR sticker dağıtımı.
 
 **Yayına alma kuralı: "yayında ama tanıtılmıyor".** Site, yan özellikler
