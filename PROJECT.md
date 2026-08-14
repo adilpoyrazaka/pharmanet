@@ -1,8 +1,11 @@
 # Anlaşmalı Eczane Bulucu — Proje Taslağı v0.1
 
-> Bu dosya projenin tek gerçek kaynağıdır. Repo kökünde durur. Claude Code, ChatGPT
-> ve Gemini oturumlarının hepsi işe buradan başlar. Burada olmayan şey kodda olmaz.
-> Değişiklikler `decisions.md`'ye gerekçesiyle yazılır.
+> Bu dosya projenin **plan ve kapsam** kaynağıdır: ne yapılacağı, neyin kapsam
+> dışı bırakıldığı ve hangi gerekçeyle. Repo kökünde durur; Claude Code, ChatGPT
+> ve Gemini oturumlarının hepsi işe buradan başlar ve burada olmayan şey kodda
+> olmaz (D34). Kararların gerekçesi `decisions.md`'de, **şu an nerede olduğumuz**
+> `STATE.md`'de, modeller arası iş bölümü `ORCHESTRATION.md`'de tutulur — bu
+> dosya durum bilgisi taşımaz.
 >
 > **Dil kuralı (dosyanın tamamı için).** Teknik adlandırma — tablo, sütun, alan,
 > kod, commit mesajı — İngilizce. Kullanıcı arayüzü Türkçe; İngilizce arayüz
@@ -164,7 +167,7 @@ karmaşıklık da eklenmez.
 - **Harita yüzeyi yok (D3).** Yol tarifi, telefonun harita uygulamasına derin
   bağlantıyla devredilir; ürün içinde taban harita çizilmez. Gerekirse ileride
   MapLibre + vektör tile.
-- Google Places yalnızca coğrafi kodlama ve zenginleştirme için, arka planda.
+- Google Places yalnızca coğrafi kodlama için, arka planda (D20).
 
 ### 6.2 Veri hattı (ayrı servis, Python)
 
@@ -211,8 +214,10 @@ Sigorta listeleri eczaneyi ad + adres olarak verir; ortak bir kimlik numarası y
 "Aynı eczane mi?" sorusunu çözmek gerekiyor:
 
 1. Kanonik eczane kütüğü oluştur — kaynak yalnızca il eczacı odası portalı
-   (D12, D20). Google Places kütüğe kayıt eklemez; koordinat, telefon ve
-   çalışma saati adayı üretir, uyuşmazlıkta bayrak açar.
+   (D12, D20). Google Places kütüğe kayıt **ekleyemez**; yalnızca koordinat
+   adayı üretir ve oda kaydıyla uyuşmadığında bayrak açar. Telefon oda
+   kütüğünden ve K2/K4 turlarından, çalışma saati D45'in kural tablosundan
+   gelir.
 2. Ad normalizasyonu (Türkçe karakter, "Ecz." ekleri, unvan değişiklikleri).
 3. Adres ayrıştırma + coğrafi kodlama.
 4. Bulanık eşleme (trigram benzerliği + coğrafi yakınlık birlikte).
@@ -295,9 +300,12 @@ turunun çıktısıdır ve atlanamaz (D8). `confidence` bağımsız yazılmaz,
 `verification_method`'tan türer; arayüz en güçlü doğrulamayı gösterir.
 
 **Yenileme sıklığı katman başınadır (D18).** Oda kütüğü aylık, kurum anlaşma
-listeleri haftalık, nöbet verisi günlük. Saha/telefon doğrulaması sıklıkla değil
-tazelik eşiğiyle yönetilir: `verified_at` üzerinden **60 gün** geçen kayıt
-"doğrulanmış" rozetini kaybeder, silinmez, tarihiyle gösterilir (D17).
+listeleri haftalık, nöbet verisi günlük, mesai/cumartesi kural tablosu ve resmi
+tatil takvimi yıllık (D45). Beşinci bir katman takvime bağlanamaz: köprü
+tatilleri **olay tetiklidir**, bakanlıklarca bir-iki hafta önce duyurulur ve
+satırı elle eklenir. Saha/telefon doğrulaması sıklıkla değil tazelik eşiğiyle
+yönetilir: `verified_at` üzerinden **60 gün** geçen kayıt "doğrulanmış"
+rozetini kaybeder, silinmez, tarihiyle gösterilir (D17).
 
 **Kütük tüm eczaneleri kapsar (D16).** Nöbet tutmayanlar dahil; kütük nöbet
 listesinden türetilemez. Bölge sayıları şemada bir alan değildir: her oda
@@ -511,14 +519,10 @@ tek tıkla anlarsın.
 
 ## 12. Sıradaki Tek Adım
 
-Faz 0'ın iki kolu da bu hafta başlar:
+## 12. Sıradaki Tek Adım
 
-1. **Bugün:** Repoyu kur, bu dosyayı ve `decisions.md`'yi işle.
-2. **Bu hafta:** Gemini'ye kaynak envanteri görevini ver (doğrulanabilir tablo formatında).
-3. **Bu hafta:** Claude Code + Fable ile tek kurum dikey dilimi.
-
-Fazlar sırayla ilerler. Faz 1'e geçmeden Faz 0'ın çıktısı — çalışan dikey dilim —
-alınmış olmalıdır.
+→ `STATE.md`. Sıradaki adımlar, devam eden işler ve blokajlar orada tutulur;
+plan dosyası durum taşımaz (ORCHESTRATION §1).
 
 ## 13. Özellik Kaydı — v1
 

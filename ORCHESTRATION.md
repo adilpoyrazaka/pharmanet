@@ -52,7 +52,7 @@ yapmaya başlar ve token yakar.
 | Model | Verilecek | Verilmeyecek |
 |---|---|---|
 | **Opus (yardımcı)** | `PROJECT.md` + `decisions.md` + `STATE.md` + `ORCHESTRATION.md` | — (tam bağlam gerekli) |
-| **Claude Code + Fable** | Repo erişimi + `architecture.md` + `PROJECT.md` §6 | İş modeli, ortaklık, sosyal medya |
+| **Claude Code + Fable** | Repo erişimi + `architecture.md` + `PROJECT.md` §6, §13, §14 | İş modeli, ortaklık, sosyal medya |
 | **ChatGPT (tasarım)** | `PROJECT.md` §3, §7, §13 + `design.md` | Veri hattı, mimari, gelir modeli |
 | **Gemini (araştırma)** | Sadece görev brief'i | Strateji — verirsen yorum yapmaya başlar |
 
