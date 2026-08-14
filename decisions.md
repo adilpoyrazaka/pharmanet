@@ -155,8 +155,18 @@ koruduğu güveni sessizce aşındırır. *Opus önerdi (90 gün), Poi 60'a çek
 Tek bir "veri güncelleme" sıklığı yok; her katman kendi hızında yenilenir:
 oda kütüğü **aylık** (açılış/kapanış/nakil yavaş, çekmek ucuz), kurum anlaşma
 listeleri **haftalık** (en oynak katman; ürünün doğruluk vaadi buna bağlı),
-nöbet verisi **günlük**, saha/telefon doğrulaması ise sıklıkla değil tazelik
-eşiğiyle yönetilir (D17). *Opus önerdi, Poi onayladı.*
+nöbet verisi **günlük**, mesai/cumartesi kural tablosu ve resmi tatil takvimi
+**yıllık** (D45), saha/telefon doğrulaması ise sıklıkla değil tazelik eşiğiyle
+yönetilir (D17).
+
+**Beşinci bir sıklık var ve takvime bağlanamaz: olay tetikli.** Köprü tatilleri
+— haftada 1–2 iş günü kaldığında günlerin birleştirilip 9 güne çıkarılması —
+bakanlıklarca tatilden ancak bir veya iki hafta önce duyurulur. Yıllık takvim
+ocak ayında doldurulup unutulursa ürün, yılın en kritik günlerinde "açık"
+gösterir. Otomatik ve güvenilir bir kaynak yok; bu satır elle eklenir ve
+sahibi Poi'dir (ORCHESTRATION §7). Dosyada yazmayan görev yapılmaz.
+*Opus önerdi, Poi onayladı; yıllık ve olay tetikli katmanlar Poi'nin saha
+bilgisiyle eklendi.*
 
 **D19 — R2'de coğrafi kırılım istenmez.** KİLİT
 Oda bölgeleri idari sınırlarla örtüşmüyor: Hatay ve Üçyol hem Konak'a hem
@@ -171,13 +181,48 @@ itirazı üzerine; ilk öneri (Balçova + Konak) çürüdü.*
 bayrak, otorite değil.** KİLİT
 Kurulum: oda portalından tek seferlik tam çekim → kanonik kütük. Süreklilik:
 D18 uyarınca aylık oda çekimi; varlığın, kimliğin ve bölge niteliğinin tek
-kaynağı budur. Google Places yalnızca (a) koordinat, telefon ve çalışma saati
-**adayı** üretir, (b) oda kaydıyla uyuşmadığında **bayrak açar**. Hiçbir koşulda
-oda kaydını ezmez ve kütüğe satır **ekleyemez**. Places'te olup odada olmayan
-kayıt yeni eczane değildir; insan onay kuyruğuna düşer.
-Gerekçe: varlık eşlemenin (`PROJECT.md` §6.4) referans tarafı tek olmak
-zorundadır. İki kaynaklı referansta "aynı eczane mi" sorusunun cevabı kaynağa
-göre değişir ve hata sessizdir. *Poi belirledi, sınır Opus.*
+kaynağı budur. Google Places yalnızca **koordinat adayı** üretir ve oda kaydıyla uyuşmadığında
+**bayrak açar**. Hiçbir koşulda oda kaydını ezmez ve kütüğe satır **ekleyemez**.
+Places'te olup odada olmayan kayıt yeni eczane değildir; insan onay kuyruğuna
+düşer.
+
+Telefon ve çalışma saati Places'in yetkisinden **çıkarıldı** (2026-08-14):
+telefon oda kütüğünden ve K2/K4 turlarından, çalışma saati D45'in kendi
+tablosundan gelir. Karşılıksız duran bir yetkiyi tutmanın maliyeti gerçekti —
+kullanılmayan aday üretimi hem ToS yüzeyini hem de "hangi kaynak otorite"
+sorusunu gereksiz yere büyütüyordu. API sistemde kalır; önceliği koordinattır.
+
+Kabul edilen kayıp: Places, iki oda çekimi arasında değişen bir bilgiyi haber
+verebilecek tek dış sinyaldi. Ay içi değişiklikleri artık yalnızca kullanıcı
+bildirimi veya saha yakalar.
+
+**D45 — Mesai ve cumartesi kural tablosu projenin kendi verisidir; yıllık
+periyotlu ve tarih aralıklıdır.** KİLİT
+Oda portalı çalışma saati vermiyor. Bu veriyi kaynak olarak satın alamayız ve
+kazıyamayız — üretiriz, dolayısıyla tazeleme yükümlülüğü de bizdedir.
+
+Şekli küçüktür çünkü olgu sabittir: mesai saati şehir düzeyinde sabittir
+(İzmir 09–19, İstanbul ve doğu illeri 09–18); tek değişken cumartesi durumudur
+ve bölgeden bölgeye değişir — bazı bölgeler her cumartesi kapalıdır. Bu durum
+yıllık veya sezonluk belirlenir, hafta hafta dönmez. Yani tablo 183 satır değil,
+**bölge sayısı kadar** satırdır; bugün beş.
+
+**Anahtar `city + region`.** Eski `city + district` anahtarı düştü: ilçe ne
+yayın ne yürütme birimine oturuyordu ve adres ayrıştırmadan türediği için
+sınırda hata veriyordu. Bölge niteliği oda kütüğünde zaten var (D19, D43).
+
+**Satırlar `valid_from` taşır.** "Sabit ama sezonluk değişir" tarihsiz bir
+satırla yazılamaz: yaz kuralı kışın da uygulanır ve hata sessizdir. Yeni sezon
+kuralı eskisini silmeden eklenir; geçmiş sorgular doğru cevap vermeye devam eder.
+
+**Toplama K2'nin yan çıktısıdır, ayrı bir tur değildir.** Kurum sorusuyla aynı
+görüşmede sorulur. Bölge başına tek eczaneye sormak bilgiyi verirdi ama tek
+kaynaklı kural sessiz hata üretir: o eczacı yanılırsa veya kendisi zaten
+istisnaysa bölgenin tamamı cumartesileri yanlış rozet taşır ve fark etmenin yolu
+yoktur. 183 ziyarette soru zaten soruluyor; ayrışan cevap bedava bir sinyaldir —
+ya kural yanlış yazılmıştır ya o eczane istisnadır (§14 katman 3).
+*Poi'nin saha bilgisi belirledi (sabitlik, cumartesi, bölge birimi); tarih
+aralığı ve her ziyarette toplama Opus.*
 
 ---
 
@@ -386,13 +431,24 @@ eczane sayfaları kurum eşleşmesi olmadan da indekslenebilir. Lokalde tutulan 
 **Tanıtım kapısı: bölgedeki eczanelerin %80'i `phone` veya `field` ile
 doğrulanmış olmalı.** Ölçü birimi eczanedir, `kurum × eczane` çifti değil: tek
 telefon görüşmesi o eczanenin kurum listesinin tamamını doğrular, çift üzerinden
-saymak aynı işi kurum sayısıyla çarpar. Payda K1 dışa aktarımından gelir.
+saymak aynı işi kurum sayısıyla çarpar. Payda her zaman **en güncel oda snapshot'ından** hesaplanır, donmuş bir
+sayımdan değil: aksi halde tazelemeyle gelen yeni eczaneler paydaya hiç
+girmez ve kapı gerçek kapsamayı değil geçmiş bir fotoğrafı ölçer. Kabul
+edilen sonuç: açılmış bir bölge, kendi doğrulaması bozulmadan da yeni
+açılışlar yüzünden eşiğin altına düşebilir. Bu bir kusur değil, borç
+kuralının yakalaması gereken durumun ta kendisidir.
 
 Eşik neden İzmir geneli değil bölge bazlı: D17 rozeti 60 günde düşürüyor. Tek bir
 il geneli eşik konsaydı, tur 60 günü aştığı anda ilk aranan bölgeler sen bitirmeden
 rozeti kaybederdi ve oran hiç %80'e ulaşmazdı — kovalanan hedef. Bölge bazlı
 eşikte 60 günlük saat bölge başına işler, tanıtım daha erken başlar ve ilk bölgede
 öğrenilen sonrakine girer.
+
+**Kural satırı şartı:** bir bölge, kendi `city + region` kural satırı geçerli
+bir `valid_from` ile mevcut olmadan tanıtıma açılamaz (D45). Aksi halde
+İstanbul veya doğu illeri açıldığında `is_open` sessizce İzmir varsayılanını
+uygular; hata bir saat değil bir şehir ölçeğinde olur ve rozet yanlış olduğu
+gün fark edilmez.
 
 **Borç kuralı:** açılmış bir bölge %80'in altına düşerse tanıtımı durdurulmaz,
 ama **yeni bölge açılmaz.** Aksi halde doğrulama borcu birikir ve hiçbir bölge

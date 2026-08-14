@@ -291,7 +291,8 @@ genişletmek pahalıya patlar (D7).
 **Şema sonucu (şimdi kararlaştırılır, sonra değil):** her kayıt
 `verification_method` (`chamber` / `field` / `phone` / `self_claimed` /
 `scraped`) ve `verified_at` taşır. Bu beş değer kanoniktir — `field` K2 saha
-turunun çıktısıdır ve atlanamaz (D8).
+turunun çıktısıdır ve atlanamaz (D8). `confidence` bağımsız yazılmaz,
+`verification_method`'tan türer; arayüz en güçlü doğrulamayı gösterir.
 
 **Yenileme sıklığı katman başınadır (D18).** Oda kütüğü aylık, kurum anlaşma
 listeleri haftalık, nöbet verisi günlük. Saha/telefon doğrulaması sıklıkla değil
@@ -299,9 +300,12 @@ tazelik eşiğiyle yönetilir: `verified_at` üzerinden **60 gün** geçen kayı
 "doğrulanmış" rozetini kaybeder, silinmez, tarihiyle gösterilir (D17).
 
 **Kütük tüm eczaneleri kapsar (D16).** Nöbet tutmayanlar dahil; kütük nöbet
-listesinden türetilemez. Her sayım `sayım tarihi` ile kaydedilir — 183 sayısı
-2026-08-12 anlık görüntüsüdür (Balçova-1 36, Balçova-2 17, Hatay 60,
-Mithatpaşa 37, Üçyol 33). `confidence` bu alandan türetilir. Arayüz en güçlü doğrulamayı gösterir.
+listesinden türetilemez. Bölge sayıları şemada bir alan değildir: her oda
+dışa aktarımı `snapshot_id` ve `fetched_at` ile saklanır (D14, §6.3), sayım
+o snapshot üzerinde bir `COUNT` sorgusudur. Sayıyı sütuna yazmak ilk aylık
+tazelemede sessizce bayatlayan bir kopya üretir. 183 rakamı 2026-08-12
+snapshot'ının çıktısıdır (Balçova-1 36, Balçova-2 17, Hatay 60,
+Mithatpaşa 37, Üçyol 33).
 
 **Çelişki kuralı:** Şirketin yayınlanmış listesi "evet", eczane "hayır" diyorsa
 **eczanenin beyanı kazanır** — müşteriyi geri çevirecek olan o. Ama iki kayıt da
@@ -562,31 +566,51 @@ Türkiye'de Yandex kullanımı yüksek olduğu için üçü de sunulur.
 
 ## 14. Çalışma Durumu ve Saha Formu
 
+### `facility.status` — katman yığınının üstünde ön filtre
+
+Geçici veya kalıcı kapalılık `is_open`'ın işi değildir. `facility.status`
+(`active` / `temporarily_closed` / `closed`) ayrı bir alandır ve katmanlar
+hesaplanmadan önce çalışır: `active` olmayan tesis sonuç listesinde açık/kapalı
+rozetiyle yer almaz.
+
+Gerekçe: tadilatta olan bir eczane "eczane istisnası" katmanına yazılsaydı,
+altındaki öncelik sırası gereği nöbet override onu ezer ve kapalı bir eczaneyi
+gece nöbetçisi olarak gösterirdik. Bu, ürünün yapabileceği en pahalı tek hatadır.
+
+Kaynağı K1 / K2 / K5'tir. "Bu bilgi yanlış" bildirimi tek başına statü
+değiştirmez; insan onay kuyruğuna düşer (D20'nin kuyruğuyla aynı mantık).
+
 ### `is_open` türetilmiş alandır, saha verisi değil
 
-Dört katman, bu öncelikle:
+Dört katman, **tepeden tabana; ilk eşleşen kazanır.**
 
-1. **Bölge kuralı tablosu** — anahtar: `city + district`. Alanlar: hafta içi
-   kapanış saati, cumartesi açık mı. Mesai Türkiye'de büyük ölçüde standarttır;
-   tek değişken cumartesi durumudur ve bölge bazında bilinir. Tur öncesi
-   birkaç satırla doldurulur. Kapanış saati şehre göre değişir (İzmir 19,
-   İstanbul 18) — tablo şehir anahtarlı kurulur, İstanbul/Ankara açılışında
-   şema değişmez, satır eklenir.
-2. **Eczane istisnası** — boş başlar. Yalnızca "bu bilgi yanlış" bildirimiyle dolar.
-   Saha maliyeti sıfır, doğruluk garantisi korunur.
-3. **Nöbet override** — günlük pipeline, oda kaynaklı. `facility_id` ortak
-   olduğu için varlık eşleme gerekmez.
-4. **Resmi tatil / bayram takvimi** — bayramda yalnızca nöbetçi açıktır.
-   Bu katman yoksa rozet en kritik günde yanlış bilgi verir.
+1. **Nöbet override** — o gün nöbetçi olan eczane açıktır. Günlük pipeline,
+   oda kaynaklı; `facility_id` ortak olduğu için varlık eşleme gerekmez.
+   En üstte olmasının gerekçesi: tatil takvimi bir kural, nöbet listesi o güne
+   ait bir olgudur. Kural olguyu ezerse ürün, en çok arandığı gecede tek doğru
+   cevabı gizler.
 
-### Saha formu — nihai (K2 öncesi kilit)
+2. **Resmi tatil / bayram takvimi** — nöbetçi değilse günün tipini bu katman
+   belirler. Satır bir `day_type` taşır: `full_closure` · `half_day` · `normal`.
+   `half_day` kendi `closing_time` değerini getirir — Ramazan ve Kurban Bayramı
+   arefeleri ile 28 Ekim'de mesai 13:00'a kadardır. Saat koda gömülmez,
+   sütunda durur; şehirler arası fark çıkarsa şema değişmez, satır eklenir.
+   Katman boolean olsaydı arefe günü **açık** eczaneleri kapalı gösterirdik;
+   yanlışın ters yönü ama aynı maliyet. Tazeleme kuralı D18'dedir: takvim
+   yıllık yüklenir, köprü tatilleri olay tetiklidir.
 
-`facility_id` · `institutions[]` · `phone` · `whatsapp_active`
-· `address_confirmed` · `location_confirmed` · `interviewed_at`
-· `sticker_accepted`
+3. **Eczane istisnası** — yalnızca haftalık mesai sapması. İki kaynaktan dolar:
+   K2'de bölge kuralıyla çelişen cevap veren eczane bu katmanın ilk satırıdır,
+   sonrasında "bu bilgi yanlış" bildirimleri eklenir. Kalıcı/geçici kapalılık
+   buraya **yazılmaz** — o `facility.status`'tur.
 
-Mesai ve nöbetle ilgili hiçbir alan yok — ikisi de kural/pipeline tarafında.
-Form sekiz alandır; 183 ziyarette form uzunluğu doğrudan veri kalitesini belirler.
+4. **Bölge/şehir kuralı (yedek)** — anahtar `city + region` (oda bölgesi),
+   satırlar `valid_from` ile tarihlidir. Alanlar: hafta içi `closing_time`,
+   cumartesi durumu. Yalnızca üstteki üç katmanın hiçbiri eşleşmediğinde
+   çalışır. Detay ve gerekçe D45'tedir.
+
+Kartın "açık/kapalı + kapanış saati" satırı (§13) bu yığının çıktısını
+gösterir; yarım gün de dahil, gösterilen saat hesaplanan `closing_time`'dır.
 
 ---
 
