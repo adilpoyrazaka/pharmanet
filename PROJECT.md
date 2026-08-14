@@ -825,6 +825,5 @@ Editoryal politika aynen uygulanır.
 
 ### Zamanlama
 
-Sosyal medya tanıtımdır; D31 gereği tanıtımlı açılışta başlar.
-**Ancak kullanıcı adları bugün alınır** — handle kapılması geri dönüşü olmayan
-bir kayıptır. Hesaplar boş dursun, isim elimizde olsun.
+Sosyal medya tanıtımdır; D31 gereği tanıtımlı açılışta başlar. Kullanıcı adları
+2026-08-14'te alındı (D46) — hesaplar boş duruyor, isim elimizde.

@@ -482,6 +482,48 @@ markalı ile markasız sorgu ayrılamaz ve metrik doğduğu anda ölür. Ad üç
 geçer: söylenebilir, Türkçe klavyede hatasız yazılabilir, arama sonuçlarında
 ayırt edilebilir. Bu, alan adı seçimini kritik yola taşır (D43: alan adı bugün
 alınır). *Opus önerdi, Poi onayladı.*
+
+**D46 — Marka adı MEDPUSULA; "med" ile "pusula" görsel ve işitsel olarak ayrılır.** KİLİT
+2026-08-14'te alındı: `medpusula.com`, `medpusula.com.tr`, Instagram ve X'te
+`@medpusula`. D31'in saati bu tarihte başladı.
+
+**Bağlayıcı şart — kanonik alan adı `medpusula.com`'dur.** `medpusula.com.tr`
+savunma amaçlı tutulur; içerik barındırmaz, `medpusula.com`'a 301 ile
+yönlendirilir ve hiçbir koşulda ayrıca indekslenmez. Gerekçe: aynı içeriğin iki
+alan adında yayınlanması arama otoritesini ikiye böler ve bu, D31'in biriktirmek
+için erken açılmayı göze aldığı şeyin ta kendisidir. Dil yapısı `/tr/` ve `/en/`
+yollarıyla tek alan adı üzerinde kurulur (PROJECT.md dil kuralı); ikinci alan adı
+bu yapının parçası değildir.
+
+**D44'ün üç testi.** Klavye testi temiz: diakritik yok, ı/i tuzağı yok, kulaktan
+yazılabilir. Ayırt edilebilirlik testi bileşik ad sayesinde geçiyor —
+"pusula" tek başına yoğun bir kelime (sağlık dizini DoktorPusula, Türkiye
+Sigorta'nın "Pusula" ürünü, Pusula Medikal) ama birebir dizgi olarak
+"medpusula" benzersiz, dolayısıyla Search Console'da markalı/markasız ayrımı
+çalışır ve D44'ün metriği doğduğu anda ölmez.
+
+**Söylenebilirlik testi bir şartla geçti.** Türkçede `d` + `p` ötümsüzleşiyor:
+ad ağızdan "metpusula" olarak çıkıyor. Bu bir yazım hatası değil, D44'ün
+korumaya çalıştığı köprünün kaybıdır — eczacı adı tezgahta söyler, kullanıcı
+duyduğunu arar, arama bize gelmez. Saha testi yerine bağlayıcı bir tasarım
+şartı konuldu.
+
+**Bağlayıcı şart — ad iki parçalı işlenir.** Yazılı yüzeyde "med" ile "pusula"
+görsel olarak ayrılır (büyük harf, ağırlık farkı veya renk kırılımı; hangisi
+olduğu tasarımın işi). Sözlü tanıtımda ad iki kelime gibi söylenir. İkisi
+birlikte zorunludur: görsel ayrım yazılı yüzeyi kurtarır, ötümsüzleşme
+konuşulan yüzeyde olur. Bu şart §7'nin tasarım brief'ini bağlar.
+
+**Marka taraması (TÜRKPATENT, 2026-08-14).** "medpusula" birebir, tüm sınıflar:
+sonuç yok. "pusula" birebir, tüm sınıflar: 37 kayıt. Sınıf 44 (tıbbi hizmetler)
+hiç kullanılmamış. Sınıf 35 (reklam, iş bilgisi, dizin) beş kayıt taşıyor ve
+beşi de geçersiz veya feragat. Canlı kayıtlar 09 ve 42'de (2014/101669,
+2006/28829). Bu bir tarama, marka müşavirliği değildir: kayıt durumları
+listeden okundu, dosyalar açılmadı; bileşik adlar (DoktorPusula gibi) bu
+sorguya girmez.
+
+**Açık kalan:** 09/42'deki canlı PUSULA kayıtlarına karşı bir MEDPUSULA
+başvurusunun durumu → **A4.5**. *Ad Poi'nin, testler ve şart Opus.*
 ---
 
 ## Açık — karara bağlanmadı
@@ -506,5 +548,13 @@ Her birinin neyi bloke ettiği yazılır; cevap "hayır" gelirse ne düşeceği 
   §15 fiyat şeffaflığı katmanı.
 - **A4.3** İYS / ticari elektronik ileti kapsamı: push bildirimi kapsama giriyor mu.
   → Bloke ettiği: §17 içerik bildirimi kategorisi (hizmet bildirimi ayrı).
+- **A4.4** Oda portalı kullanım şartları: otomatik giriş ve dışa aktarım ticari
+  bir sisteme devredilebilir mi. → Bloke ettiği: K1'in aylık tazeleme biçimi
+  (D18, D20) ve `architecture.md`'nin veri alım bölümü. Cevap "hayır" ise K1
+  tazelemesi kalıcı olarak **elle dışa aktarım + otomatik alım** olur.
+- **A4.5** MEDPUSULA marka başvurusunun 09/42 sınıflarındaki canlı PUSULA
+  kayıtları karşısındaki durumu (D46). → Bloke ettiği: hiçbir şey; ad ve alan
+  adı kilitli. Cevap olumsuzsa etkilenen tek şey tescil stratejisidir.
+  A4.1 ile **aynı avukat görüşmesinde** sorulur.
 
 **A5 — KAPANDI (2026-08-12).** Ana tablo adlandırması D15 ile karara bağlandı.
