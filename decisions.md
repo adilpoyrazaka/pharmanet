@@ -106,9 +106,27 @@ masaya konacak en güçlü koz. Kendiliğinden birikir. *Opus.*
 telefon dahil) → K3 depo temsilcileri + QR sticker → K4 kalan İzmir bölgeleri
 telefon turu → K5 eczacı sahiplenme akışı.** KİLİT
 
-**D12 — Kanonik eczane kütüğü İzmir Eczacı Odası portalından.** KİLİT
-Erişim mevcut. Varlık eşlemenin (6.4) en zor sorusu — referans taraf nereden gelecek —
-bu erişimle kapandı. *Poi.*
+**D12 — Kütüğün kimlik ve bölge kaynağı İzmir Eczacı Odası'dır; girişli portal
+yalnızca bir defalık bootstrap'tir.** KİLİT
+Erişim mevcut. Varlık eşlemenin (§6.4) en zor sorusu — referans taraf nereden
+gelecek — bu erişimle kapandı.
+
+Girişli portal 2026-08-14'te **sürekli kaynak olmaktan çıkarıldı.** İki gerekçe.
+Birincisi: portal eczacıların kişisel kimlik bilgisini taşıyor. Veri saklanmasa
+bile kopyala-yapıştırla makineden geçer, ara dosyalarda durur ve bir gün
+yanlışlıkla repoya girer — §6.6'nın "işletme tutulur, kişi tutulmaz" kuralıyla
+doğrudan çarpışır. İkincisi: aylık tazelemeyi girişli bir portala bağlamak,
+ürünün sürekliliğini bir erişim iznine bağlar; izin kalktığı gün kütük donar ve
+D17'nin rozeti sessizce yanlış olur.
+
+Portal tek bir iş için kullanılır: **eczane → oda bölgesi eşlemesinin bir
+defalık alınması.** Portalda dışa aktarım yoktur; veri bölge bölge listelenir,
+kopyala-yapıştırla alınır ve CSV'ye elle düzenlenir. Ham yapıştırma metni
+dokunulmadan saklanır, CSV ondan türetilir (D14'ün bu katmandaki karşılığı:
+denetim izi HTML değil, yapıştırılan metindir).
+
+Süreklilik D20'dedir. *Poi karar verdi (kişisel veri ve erişim bağımlılığı),
+gerekçe ve sonuçlar Opus.*
 
 **D13 — QR stant değil sticker.** KİLİT
 Yer kaplamaz, izin süreci hafif, reddedilme eşiği düşük, depo temsilcisinin
@@ -177,24 +195,29 @@ bizim tarafta çözülü. Gemini'den istenecek olan İzmir geneli **ad + adres s
 bölge ataması varlık eşlemede (§6.4) kendi kütüğümüzden gelir. *Poi'nin sınır
 itirazı üzerine; ilk öneri (Balçova + Konak) çürüdü.*
 
-**D20 — Kanonik kütük tek kaynaklıdır: oda portalı. Places zenginleştirme ve
-bayrak, otorite değil.** KİLİT
-Kurulum: oda portalından tek seferlik tam çekim → kanonik kütük. Süreklilik:
-D18 uyarınca aylık oda çekimi; varlığın, kimliğin ve bölge niteliğinin tek
-kaynağı budur. Google Places yalnızca **koordinat adayı** üretir ve oda kaydıyla uyuşmadığında
-**bayrak açar**. Hiçbir koşulda oda kaydını ezmez ve kütüğe satır **ekleyemez**.
+**D20 — Kütüğün tek otoritesi İzmir Eczacı Odası'dır: iki yüzey, tek kaynak.
+Places zenginleştirme ve bayrak, otorite değil.** KİLİT
+**Bootstrap:** girişli portal, bir defalık, eczane → bölge eşlemesi (D12).
+**Süreklilik:** odanın kamuya açık üye listesi, D18 uyarınca aylık scraper.
+Bu iki yüzey aynı kurumun yüzeyidir; kaynak sayısı birdir ve "tek kaynak"
+kuralı bozulmamıştır.
+
+**Kamuya açık yüzeyin ölçülmüş özellikleri (2026-08-14).** `/uyelerimiz/{sayfa}`
+altında 129 sayfa × 20 kayıt ≈ 2.580 satır. Nöbet listesi değil, tam üye
+listesidir — D16'nın yasakladığı kısayola düşülmüyor. Ad, adres, telefon ve
+**ilçe** taşır. **Oda bölgesi taşımaz** (sonucu D48). Harita bağlantısı
+kayıtların çok azında vardır; koordinat kaynağı sayılmaz.
+
+Google Places yalnızca **koordinat adayı** üretir ve oda kaydıyla uyuşmadığında
+**bayrak açar.** Hiçbir koşulda oda kaydını ezmez ve kütüğe satır **ekleyemez**.
 Places'te olup odada olmayan kayıt yeni eczane değildir; insan onay kuyruğuna
-düşer.
+düşer. Telefon ve çalışma saati Places'in yetkisinden çıkarıldı (2026-08-14):
+telefon oda listesinden ve K2/K4 turlarından, çalışma saati D45'in kendi
+tablosundan gelir.
 
-Telefon ve çalışma saati Places'in yetkisinden **çıkarıldı** (2026-08-14):
-telefon oda kütüğünden ve K2/K4 turlarından, çalışma saati D45'in kendi
-tablosundan gelir. Karşılıksız duran bir yetkiyi tutmanın maliyeti gerçekti —
-kullanılmayan aday üretimi hem ToS yüzeyini hem de "hangi kaynak otorite"
-sorusunu gereksiz yere büyütüyordu. API sistemde kalır; önceliği koordinattır.
-
-Kabul edilen kayıp: Places, iki oda çekimi arasında değişen bir bilgiyi haber
-verebilecek tek dış sinyaldi. Ay içi değişiklikleri artık yalnızca kullanıcı
-bildirimi veya saha yakalar.
+Kabul edilen kayıp: bölge niteliği artık tazelemeyle gelmiyor — bootstrap'ten
+sonra açılan eczane bölgesiz doğar. Karşılığı D48'dir. *Yüzey ayrımı Poi,
+ölçüm ve sonuçlar Opus.*
 
 **D45 — Mesai ve cumartesi kural tablosu projenin kendi verisidir; yıllık
 periyotlu ve tarih aralıklıdır.** KİLİT
@@ -223,6 +246,55 @@ yoktur. 183 ziyarette soru zaten soruluyor; ayrışan cevap bedava bir sinyaldir
 ya kural yanlış yazılmıştır ya o eczane istisnadır (§14 katman 3).
 *Poi'nin saha bilgisi belirledi (sabitlik, cumartesi, bölge birimi); tarih
 aralığı ve her ziyarette toplama Opus.*
+
+**D47 — Alım hattının ilk işi satırı kişiden tesise indirgemektir; kişi alanı
+kütüğe girmez.** KİLİT
+Kamuya açık listenin satır birimi **eczacıdır, eczane değil.** Yardımcı eczacı
+satırlarında adres ve telefon yoktur — onlar bir tesis değil, bir tesiste
+çalışan kişidir. Hastane eczacıları da listededir. Ölçü: ~2.580 satıra karşılık
+İzmir'de ~1.335 kayıtlı eczane; satırların kabaca yarısı serbest eczane
+değildir. Bu fark hattın başında elenmezse `facility` tablosu insanlarla dolar.
+
+**Kural, alım anında uygulanır.** (1) Adressiz satır elenir. (2) Serbest eczane
+olmayan kayıtlar kütüğe girmez. (3) **Eczacı adı alanı düşürülür ve hiçbir
+tabloya yazılmaz.**
+
+Üçüncü kuralın gerekçesi §6.6'nın ötesine geçer: bir eczanenin sahibi devir ve
+nakille değişir. Kimliği kişiye bağlamak, `facility` kaydını sahibinin hayatına
+bağlar ve sahip değiştiği gün eşleme kopar. D15'in kaçındığı göç maliyetinin
+aynısıdır, sadece satır düzeyinde.
+
+**Bağlayıcı şart:** elenen satır sayısı her çekimde loglanır ve kaynak sağlığı
+alarmının (§6.2) girdisi olur. Elenen oran aniden değişmişse sayfa yapısı
+değişmiştir; kayıt sayısını izlemek tek başına bunu yakalamaz. *Opus.*
+
+**D48 — `mahalle → bölge` arama tablosu; bootstrap'ten türetilir, projenin kendi
+verisidir.** KİLİT
+Kamuya açık yüzey bölge taşımadığı için (D20), bootstrap'ten sonra açılan her
+eczane bölgesiz doğar. D43'ün tanıtım kapısı bölge bazlı olduğundan bölgesiz
+kayıt paydaya giremez; kapı bir süre sonra gerçek kapsamayı değil, bootstrap
+gününün fotoğrafını ölçmeye başlar — D43'ün "payda her zaman en güncel
+snapshot'tan" kuralının sessizce ihlali.
+
+**Çözüm bootstrap'in yan çıktısıdır.** Portal eşlemesi ~1.335 satırlık bir
+adres + bölge eşleşmesi verir; bundan `mahalle → bölge` tablosu türetilir. Yeni
+kayıt bilinen bir mahalledeyse bölgesi atanır; bilinmeyen mahalledeyse insan
+onay kuyruğuna düşer (D20'nin kuyruğu, aynı mekanizma).
+
+**D19 çürütülmüyor.** D19'un itirazı **ilçe** çözünürlüğüneydi: Hatay ve Üçyol
+hem Konak'a hem Karabağlar'a yayılıyor, yani ilçeden bölgeye geçilemiyor. Oda
+bölgeleri mahalle ve cadde hatlarıyla çizilir; mahalle, D19'un reddettiği
+çözünürlüğün bir kademe altındadır ve reddin gerekçesi bu kademede geçerli
+değildir.
+
+**Kabul edilen sınır:** bir mahalle birden fazla bölgeye bölünmüşse tablo o
+mahalle için karar veremez. Böyle satırlar **çok değerli** olarak işaretlenir ve
+doğrudan kuyruğa gider; tahmin edilmez. Sınırda tahmin yürütmek D19'un
+reddettiği hatayı geri getirir.
+
+**Bakım D45 ile aynı desendedir:** projenin kendi verisidir, satırlar
+`valid_from` taşır (oda bölge sınırlarını değiştirebilir), doğrulaması K2/K4'ün
+yan çıktısıdır — ziyarette bölge zaten teyit ediliyor. *Opus.*
 
 ---
 
