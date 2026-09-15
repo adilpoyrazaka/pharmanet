@@ -68,7 +68,9 @@ haversine) ama sonuç kalitesini ilçe sınırlarında düşürüyor ve D19'un a
    üç ayrı yerde saklanmış olur ve "saklamıyoruz" cümlesi yanlış beyana döner.
 2. Konum izni reddi birinci sınıf akıştır, hata değil: ilçe seçimiyle aynı liste
    mesafesiz döner (§13).
-3. Kullanıcıya verilen söz **"konumunuz sunucuya gitmez" değildir.** Sunucu ilçe
+3. Mesafeden türetilen yürüme süresi tek sayı değil aralık olarak
+   gösterilir (D50). Kuş uçuşu hesap gerçek yolu olduğundan kısa verir.
+4. Kullanıcıya verilen söz **"konumunuz sunucuya gitmez" değildir.** Sunucu ilçe
    seçiminden ve IP'den kabaca nerede olunduğunu zaten bilir. İddianın kapsamı
    hassas koordinatla sınırlıdır: "yalnızca sıralama için kullanılır, saklanmaz
    ve kaydedilmez."
@@ -167,7 +169,8 @@ görünümdür, kaynağı değil. *Poi.*
 `verified_at` üzerinden 60 günden fazla geçmiş kayıt "doğrulanmış" rozetini
 kaybeder. Kayıt silinmez, tarihiyle gösterilir. Eşik olmazsa aylar önce yüz yüze
 doğrulanmış bir kayıt arayüzde bugün doğrulanmışla aynı görünür; bu, D28'nin
-koruduğu güveni sessizce aşındırır. *Opus önerdi (90 gün), Poi 60'a çekti.*
+koruduğu güveni sessizce aşındırır. Rozet gösterimi ilişki başınadır: eşik her kurum–tesis ilişkisi için ayrı
+işler, tesis için değil (D49). 
 
 **D18 — Katman başına yenileme sıklığı.** KİLİT
 Tek bir "veri güncelleme" sıklığı yok; her katman kendi hızında yenilenir:
@@ -319,6 +322,47 @@ elde tutma motoru. Kurum filtresi farklılaştırır, nöbetçi hatırlatır. *O
 Kurum filtresi düşük frekanslı; trafik birikmezse ne reklam ne kaldıraç kapısı
 çalışır. Poi'nin kendi listesindeki 6-7-8. maddeler bu sorunun cevabı, o yüzden
 öne alındı. *Frekans tartışmasının sonucu.*
+
+**D49 — Kurum rozeti tazeliği ilişki başına değerlendirilir ve gösterilir.** KİLİT
+D17'nin 60 günlük eşiği kurum–tesis ilişkisine bağlıdır, tesise değil. Bir
+eczanenin Allianz anlaşması üç gün önce, AXA anlaşması altı ay önce
+doğrulanmış olabilir. Kart her iki rozeti de aynı görünümde gösterirse,
+güncel bir doğrulama bayat bir doğrulamayı taşır ve kullanıcı ikisini
+ayırt edemez.
+
+**Kural:** kartta görünen her rozet kendi `verified_at` tarihine göre
+değerlendirilir. Eşiği aşan rozet soluk gösterilir; aranan kurumun
+anlaşması güncel olsa bile diğerleri kendi durumlarını taşır.
+
+**Bayat rozet gizlenmez.** Kullanıcının "burada bu kurum var mıydı"
+sorusunun cevabını tarihiyle birlikte görmesi, rozetin hiç görünmemesinden
+iyidir. Gizleme, doğrulanmamışı yok saymak olur; ürünün iddiası
+doğrulanmışı ayırt etmek.
+
+**Bağlayıcı şart:** açılan katman `verified_at` ve `verification_method`
+değerlerini birlikte gösterir. Tarih tek başına yöntemsiz anlam taşımaz —
+saha ziyaretiyle telefon teyidi aynı tarihte aynı güveni vermez.
+
+**Etkileşim tooltip ile kurulamaz.** Tooltip dokunmatik cihazda açılmaz;
+mobil ağırlıklı bir üründe bu, bilginin kullanıcıların çoğuna hiç
+ulaşmaması demektir. Popover kullanılır: masaüstünde imleçle, dokunmatikte
+tıklamayla açılır. *Seçenekler Opus, seçim Poi.*
+
+**D50 — Yürüme süresi tek sayı değil aralık olarak gösterilir.**
+D41 mesafeyi kuş uçuşu hesaplar. Şehir içi gerçek yol bunun 1,2–1,5
+katıdır ve İzmir'in yokuşlu bölgelerinde (Güzelyalı, Üçyol, Mithatpaşa)
+sapma üst banda yaklaşır. Tek sayı, sahip olmadığımız bir kesinliği iddia
+eder.
+
+**Kural:** mesafeye 1,2 ve 1,5 katsayıları uygulanır, 4,0 km/s yürüme
+hızıyla süreye çevrilir, aralık olarak sunulur ("11–13 dk"). Alt sınır 1
+dakikadır; yuvarlamadan sonra iki uç eşitse tek sayı gösterilir.
+
+**Geçicidir, kilitli değildir.** Katsayılar gerçek yol verisi bağlanana
+kadar geçerlidir. D3 yol tarifini harita uygulamasına devrettiği için kesin
+süreyi zaten o uygulama verir; buradaki sayının işi sıralamayı
+anlamlandırmak, navigasyon vaadi vermek değil. *Seçenekler Opus, seçim
+Poi.*
 
 ---
 
