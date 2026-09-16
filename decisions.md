@@ -364,6 +364,26 @@ süreyi zaten o uygulama verir; buradaki sayının işi sıralamayı
 anlamlandırmak, navigasyon vaadi vermek değil. *Seçenekler Opus, seçim
 Poi.*
 
+**D51 — Dil yolları: `/tr` ve `/en`; kök kalıcı olarak `/tr`'ye yönlenir, dil algılanmaz.** KİLİT
+D46 dil yapısını `/tr/` ve `/en/` yollarıyla tek alan adında kurdu; bu karar
+uygulamasını bağlar.
+
+**Kural:** her dil kendi önekini taşır. Kök `/`, 308 kalıcı yönlendirmeyle
+`/tr`'ye gider. Türkçe öneksiz sunulmaz: iki dilin URL ağacı simetrik kalır ve
+programatik SEO sayfaları (`/tr/...` ↔ `/en/...`) hreflang ile birebir eşlenir.
+Bedeli, en çok paylaşılacak adresin bir yönlendirme adımı yapmasıdır; kalıcı
+yönlendirme tarayıcıda önbelleğe alındığı için bu maliyet ilk ziyarette kalır.
+
+**Tarayıcı diline göre yönlendirme yapılmaz.** Dil yalnızca bağlantıyla
+değişir. Gerekçe: aynı adres farklı istemciye farklı içerik verirse arama
+botunun gördüğü sayfa ile kullanıcının gördüğü ayrışır ve paylaşılan bir
+bağlantı alıcıda başka dilde açılır.
+
+**URL'ler sonda eğik çizgi taşımaz** (`/tr`, `/tr/izmir/balcova`). Her sayfa
+kendi dilinde canonical, diğer dil için `alternate hreflang` ve `x-default`
+olarak `/tr` bildirir. `<html lang>` sunucuda üretilir; istemcide sonradan
+atanmaz. Tanımsız dil öneki 404 döner. *Seçenekler Opus, seçim Poi.*
+
 ---
 
 ## İş modeli
