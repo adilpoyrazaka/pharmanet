@@ -384,6 +384,27 @@ kendi dilinde canonical, diğer dil için `alternate hreflang` ve `x-default`
 olarak `/tr` bildirir. `<html lang>` sunucuda üretilir; istemcide sonradan
 atanmaz. Tanımsız dil öneki 404 döner. *Seçenekler Opus, seçim Poi.*
 
+**D52 — PWA önbelleği sonuç taşımaz; manifest dil başınadır.** KİLİT
+Service worker yalnızca değişmeyen dosyaları önbelleğe alır: sürümlü
+JS/CSS paketleri, ikonlar ve `offline.html`. Arama API'si ve sayfa HTML'i
+önbelleğe girmez; çevrimdışı sayfa isteği `offline.html`'e düşer.
+
+**Gerekçe.** D17 ve D49 rozet tazeliğini doğrulama tarihine bağlar. Önbellekten
+verilen bir sonuç, bayatlamış anlaşmayı çevrimdışı kullanıcıya güncel rozetle
+gösterebilir ve kullanıcı bunu fark edemez. Sayfa HTML'i de bu kurala tabidir,
+çünkü sunucuda üretilen sayfa ilk sonuçları kendi içinde taşır; HTML'i
+önbelleğe almak sonucu önbelleğe almaktır. Kurulum ekranındaki "çevrimdışı
+durumunda güncel sonuç gösterilmez" vaadi bu kuralın kullanıcıya dönük
+yüzüdür.
+
+**Yeniden açılma koşulu.** Saha verisi çevrimdışı erişimin gerçek bir kullanıcı
+ihtiyacı olduğunu gösterirse (K2 veya K4 geri bildirimi), son aramanın alınma
+saatiyle işaretlenmiş ve tüm rozetleri soluk gösteren çevrimdışı görünüm
+değerlendirilir. Tahminle açılmaz.
+
+**Manifest dil başınadır.** `/tr` ve `/en` kendi manifestini bildirir;
+`start_url` kurulumun yapıldığı dile işaret eder. Tek manifest, `/en`'den
+kurulan uygulamayı Türkçe açardı ve D51'in simetrisini bozardı.
 ---
 
 ## İş modeli
