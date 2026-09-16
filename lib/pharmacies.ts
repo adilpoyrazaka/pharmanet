@@ -91,6 +91,11 @@ export function walkingRange(km: number) {
   return { min: toMinutes(DETOUR_MIN), max: toMinutes(DETOUR_MAX) };
 }
 
+/** D50: show a single figure only when both ends round to the same minute. */
+export function formatWalking(range: { min: number; max: number }) {
+  return range.min === range.max ? `${range.min}` : `${range.min}–${range.max}`;
+}
+
 export function searchPharmacies(input: SearchInput, now = Date.now()): Result[] {
   return facilities
     .filter(
