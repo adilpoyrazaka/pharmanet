@@ -50,4 +50,6 @@ Orta: (8) D36–D38 kelime çelişkisi · (9) A4.1 L1 blokajı · (16) §13–§
 (33) §9 Faz 0 "tek ilçe" → D43'e göre "tek bölge".
 Hijyen: (19) durum kodları, D33'te çift cümle · §12 başlığı iki kez · (34) D50'nin
 durum kodu yok · (35) D17/D52 atıf satırı, D17 yapıştırma izi, D46/D52 boş satır.
-Sıradaki bulgu numarası: (37).
+**Önce:** (37) Dal stratejisi süreçte tanımlı değil; `scaffold/nextjs` uzun
+yaşadı, `main` geride. Kural `ORCHESTRATION.md` + `session-prompt.md`'ye girer,
+dal `main`'e birleşir. Sıradaki bulgu numarası: (38).
