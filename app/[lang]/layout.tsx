@@ -45,11 +45,11 @@ export async function generateMetadata({
     ...copy[lang],
     // D52: per-locale manifest.
     manifest: `/${lang}/manifest.webmanifest`,
-    // D51: self-canonical, hreflang for the other locale, x-default is /tr.
+    // D51: self-canonical; /en is noindex, so no hreflang between locales.
     alternates: {
       canonical: `/${lang}`,
-      languages: { tr: "/tr", en: "/en", "x-default": "/tr" },
     },
+    robots: lang === "en" ? { index: false, follow: true } : undefined,
   };
 }
 

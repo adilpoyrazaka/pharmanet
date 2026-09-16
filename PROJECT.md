@@ -10,9 +10,11 @@
 > **Dil kuralı (dosyanın tamamı için).** Teknik adlandırma — tablo, sütun, alan,
 > kod, commit mesajı — İngilizce. Kullanıcı arayüzü Türkçe; İngilizce arayüz
 > seçeneği var ancak İngilizce sayfalar indekslenmez (`noindex`): yerel hizmet
-> için İngilizce arama talebi yok ve ince yinelenen sayfa SEO'ya zarar verir.
-> `/tr` ve `/en` yönlendirme yapısı ile `hreflang` ilk günden doğru kurulur;
-> sonradan URL değiştirmek birikmiş sıralamayı yakar.
+> için İngilizce arama talebi yok, indekslenen İngilizce sayfalar ise
+> programatik SEO yüzeyini ikiye katlayıp tarama bütçesini talebi olmayan
+> sayfalara harcatır. `/tr` ve `/en` yol yapısı ilk günden kurulur; sonradan URL
+> değiştirmek birikmiş sıralamayı yakar. `hreflang`, `/en` indekslenmediği
+> sürece bildirilmez (D51).
 
 ---
 

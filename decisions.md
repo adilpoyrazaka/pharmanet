@@ -370,7 +370,7 @@ uygulamasını bağlar.
 
 **Kural:** her dil kendi önekini taşır. Kök `/`, 308 kalıcı yönlendirmeyle
 `/tr`'ye gider. Türkçe öneksiz sunulmaz: iki dilin URL ağacı simetrik kalır ve
-programatik SEO sayfaları (`/tr/...` ↔ `/en/...`) hreflang ile birebir eşlenir.
+programatik SEO sayfaları (`/tr/...` ↔ `/en/...`) birebir karşılık gelir.
 Bedeli, en çok paylaşılacak adresin bir yönlendirme adımı yapmasıdır; kalıcı
 yönlendirme tarayıcıda önbelleğe alındığı için bu maliyet ilk ziyarette kalır.
 
@@ -380,9 +380,14 @@ botunun gördüğü sayfa ile kullanıcının gördüğü ayrışır ve paylaş�
 bağlantı alıcıda başka dilde açılır.
 
 **URL'ler sonda eğik çizgi taşımaz** (`/tr`, `/tr/izmir/balcova`). Her sayfa
-kendi dilinde canonical, diğer dil için `alternate hreflang` ve `x-default`
-olarak `/tr` bildirir. `<html lang>` sunucuda üretilir; istemcide sonradan
-atanmaz. Tanımsız dil öneki 404 döner. *Seçenekler Opus, seçim Poi.*
+kendi dilinde canonical bildirir. `/en` sayfaları `noindex` taşır (PROJECT.md
+dil kuralı) ve iki dil arasında `hreflang` bildirilmez: indekslenmeyen sayfaya
+işaret eden `hreflang` çelişkili sinyaldir ve yok sayılır. Simetrik URL ağacı
+yine bugünden kurulur, çünkü sonradan değişen şey URL olursa sıralama yanar;
+`hreflang` ise bir meta etiketidir ve `/en` indekslemeye açılırsa maliyetsiz
+eklenir. `<html lang>` sunucuda üretilir; istemcide sonradan atanmaz. Tanımsız
+dil öneki 404 döner. *Seçenekler Opus, seçim Poi; `noindex` ile çelişki Opus
+yakaladı, Poi karar verdi.*
 
 **D52 — PWA önbelleği sonuç taşımaz; manifest dil başınadır.** KİLİT
 Service worker yalnızca değişmeyen dosyaları önbelleğe alır: sürümlü
