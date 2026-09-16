@@ -169,7 +169,10 @@ görünümdür, kaynağı değil. *Poi.*
 `verified_at` üzerinden 60 günden fazla geçmiş kayıt "doğrulanmış" rozetini
 kaybeder. Kayıt silinmez, tarihiyle gösterilir. Eşik olmazsa aylar önce yüz yüze
 doğrulanmış bir kayıt arayüzde bugün doğrulanmışla aynı görünür; bu, D28'nin
-koruduğu güveni sessizce aşındırır. Rozet gösterimi ilişki başınadır: eşik her kurum–tesis ilişkisi için ayrı
+koruduğu güveni sessizce aşındırır. Gün sayımı İstanbul saatine göre takvim günüyle yapılır: bugünle
+`verified_at` arasındaki fark 0–60 gün ise kayıt tazedir. Saat hesabı
+yapılmaz — aksi halde aynı gün doğrulanmış kayıt gece saatlerinde bayat
+görünür. Gelecek tarihli `verified_at` veri hatasıdır ve taze sayılmaz. Rozet gösterimi ilişki başınadır: eşik her kurum–tesis ilişkisi için ayrı
 işler, tesis için değil (D49). 
 
 **D18 — Katman başına yenileme sıklığı.** KİLİT

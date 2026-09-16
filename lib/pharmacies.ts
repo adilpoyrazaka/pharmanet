@@ -65,9 +65,29 @@ export function normalize(value: string) {
     .replace(/ı/g, 'i');
 }
 
+const DAY_MS = 86_400_000;
+
+/** Today's calendar date in Istanbul, as YYYY-MM-DD. */
+function istanbulDate(now: number) {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Europe/Istanbul',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(now);
+  const get = (type: string) => parts.find((p) => p.type === type)?.value;
+  return `${get('year')}-${get('month')}-${get('day')}`;
+}
+
+/**
+ * D17: fresh when 0–60 Istanbul calendar days have passed since `verified_at`.
+ * No clock arithmetic; future or malformed dates are never fresh.
+ */
 export function isFresh(date: string, now = Date.now()) {
-  const age = now - Date.parse(`${date}T00:00:00Z`);
-  return age >= 0 && age <= FRESHNESS_DAYS * 86400000;
+  const days =
+    (Date.parse(`${istanbulDate(now)}T00:00:00Z`) - Date.parse(`${date}T00:00:00Z`)) /
+    DAY_MS;
+  return days >= 0 && days <= FRESHNESS_DAYS;
 }
 
 export function distanceKm(
