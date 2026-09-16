@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { locales, siteUrl, type Locale } from "@/lib/i18n";
 import "../globals.css";
@@ -32,6 +32,10 @@ const copy: Record<Locale, { title: string; description: string }> = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#087f78",
+};
+
 export async function generateMetadata({
   params,
 }: LayoutProps<"/[lang]">): Promise<Metadata> {
@@ -39,6 +43,8 @@ export async function generateMetadata({
   return {
     metadataBase: new URL(siteUrl),
     ...copy[lang],
+    // D52: per-locale manifest.
+    manifest: `/${lang}/manifest.webmanifest`,
     // D51: self-canonical, hreflang for the other locale, x-default is /tr.
     alternates: {
       canonical: `/${lang}`,
