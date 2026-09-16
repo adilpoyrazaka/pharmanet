@@ -11,7 +11,7 @@
 > kod, commit mesajı — İngilizce. Kullanıcı arayüzü Türkçe; İngilizce arayüz
 > seçeneği var ancak İngilizce sayfalar indekslenmez (`noindex`): yerel hizmet
 > için İngilizce arama talebi yok ve ince yinelenen sayfa SEO'ya zarar verir.
-> `/tr/` ve `/en/` yönlendirme yapısı ile `hreflang` ilk günden doğru kurulur;
+> `/tr` ve `/en` yönlendirme yapısı ile `hreflang` ilk günden doğru kurulur;
 > sonradan URL değiştirmek birikmiş sıralamayı yakar.
 
 ---
