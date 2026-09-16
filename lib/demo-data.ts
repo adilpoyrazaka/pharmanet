@@ -46,9 +46,24 @@ const make = (
 });
 
 export const facilities: Facility[] = [
-  make(1, 'Kıyı Eczanesi', 'Bahçelerarası Mahallesi', 'Balçova', 'Balçova-1', 38.391, 27.048, true, false, ['Allianz', 'Türkiye Sigorta', 'AXA']),
+   {
+    ...make(1, 'Kıyı Eczanesi', 'Bahçelerarası Mahallesi', 'Balçova', 'Balçova-1', 38.391, 27.048, true, false, []),
+    // D49 check: searched institution fresh, another stale.
+    agreements: [
+      { institution: 'Allianz', verification_method: 'field', verified_at: '2026-09-10' },
+      { institution: 'Türkiye Sigorta', verification_method: 'phone', verified_at: '2026-09-08' },
+      { institution: 'AXA', verification_method: 'phone', verified_at: '2026-05-20' },
+    ],
+  },
   make(2, 'Defne Eczanesi', 'Eğitim Mahallesi', 'Balçova', 'Balçova-1', 38.390, 27.055, true, true, ['Allianz', 'Anadolu Sigorta'], 'phone', '2026-09-08'),
-  make(3, 'Mavi Eczanesi', 'Teleferik Mahallesi', 'Balçova', 'Balçova-2', 38.385, 27.060, true, false, ['Allianz', 'AXA'], 'field', '2026-09-06'),
+    {
+    ...make(3, 'Mavi Eczanesi', 'Teleferik Mahallesi', 'Balçova', 'Balçova-2', 38.385, 27.060, true, false, []),
+    // D49 check: searched institution stale, another fresh.
+    agreements: [
+      { institution: 'Allianz', verification_method: 'phone', verified_at: '2026-06-15' },
+      { institution: 'AXA', verification_method: 'field', verified_at: '2026-09-06' },
+    ],
+  },
   make(4, 'Çınar Eczanesi', 'Korutürk Mahallesi', 'Balçova', 'Balçova-2', 38.382, 27.045, false, false, ['Allianz', 'Türkiye Sigorta'], 'phone', '2026-06-02'),
   make(5, 'Ada Eczanesi', 'Mithatpaşa Mahallesi', 'Konak', 'Mithatpaşa', 38.410, 27.100, true, true, ['Allianz', 'AXA', 'İş Bankası Emekli Sandığı']),
   make(6, 'Işık Eczanesi', 'Güzelyalı Mahallesi', 'Konak', 'Mithatpaşa', 38.400, 27.085, true, false, ['Türkiye Sigorta', 'Anadolu Sigorta'], 'phone'),
