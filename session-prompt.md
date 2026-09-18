@@ -59,7 +59,9 @@ Oturum sonunda "STATE güncelle" dediğimde, sırasıyla:
    gövdesi yerinde güncellenir, ek not açılmaz (D40).
 2. Plan değiştiyse → `PROJECT.md`'nin ilgili bölümü güncellenir.
 3. `STATE.md` **baştan yazılır** (eklenmez — ~40 satır sınırı korunur).
-4. Hepsi commit edilir.
+4. Hepsi kendi dalında commit edilir; CI yeşil olduktan sonra dal `main`'e
+   birleşir (fast-forward veya merge commit; squash yok) ve dal silinir. Dal bir
+   oturumdan uzun yaşayacaksa sebebi `STATE.md`'ye açık kalem olarak yazılır (D53).
 
 Bu ritüel atlanırsa bir sonraki oturum yanlış bir durumdan başlar ve bunu
 fark etmek zordur.

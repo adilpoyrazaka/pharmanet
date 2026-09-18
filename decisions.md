@@ -689,6 +689,60 @@ sorguya girmez.
 
 **Açık kalan:** 09/42'deki canlı PUSULA kayıtlarına karşı bir MEDPUSULA
 başvurusunun durumu → **A4.5**. *Ad Poi'nin, testler ve şart Opus.*
+
+**D53 — `main` her zaman güncel ve yeşildir; kod dalları kısa ömürlüdür.** KİLİT
+Varsayılan dal `main`'dir ve repoya dışarıdan bakan her taraf — GitHub arayüzü,
+yeni bir Claude Code oturumu, ileride CI — önce onu görür. `scaffold/nextjs`
+25 commit boyunca dalda yaşadı ve karar kaydının D49–D52 arası yalnızca dalda
+kaldı: `main`'deki `decisions.md` D48'de, `STATE.md` 2026-08-14'te donmuştu.
+D34 "dosyada olmayan kodda olmaz" der; bir ay eski bir `main` bu kuralı sessizce
+tersine çevirir — dosyada olan, bakan tarafın gördüğü dosyada yoktur.
+
+**Kural.**
+1. Karar ve süreç dosyaları (`PROJECT.md`, `decisions.md`, `STATE.md`,
+   `ORCHESTRATION.md`, `session-prompt.md`) dalda bekletilmez: kendi kısa ömürlü
+   dalında (`docs/<konu>`) commit edilir ve kapanış ritüelinde `main`'e birleşir.
+   "Dalda bekletilmez" doğrudan `main`'e yazmak demek değildir — madde 6 açıkken
+   doğrudan push zaten reddedilir.
+2. Kod dalları tek konuludur ve bir oturumu aşmaz. Ad `<type>/<konu>`:
+   `feat`, `fix`, `chore`, `docs`, `test`, `refactor` — commit önekleriyle aynı küme.
+3. Birleşme fast-forward veya merge commit ile yapılır; **squash yapılmaz.**
+   Gerekçe D40'ınkiyle aynı: oturumlar ve karar gövdeleri commit'lere atıf yapar,
+   squash o atıfları geçersiz kılar.
+4. Bir dal bir oturumdan uzun yaşayacaksa sebebi `STATE.md`'de açık kalem olur.
+   Sessizce uzayan dal, `main`'i geriye düşüren tek mekanizmadır.
+5. CI kurulduktan sonra bir kod dalı, testleri dalda yeşil görülmeden birleşmez.
+   Workflow dosyası da bu kuralın istisnası değildir: önce dalda eklenir, dalda
+   çalıştığı görülür, sonra `main`'e geçer. Aksi halde `main` tam birleşme anında
+   korumasız kalır.
+6. **`main` dal korumasıyla korunur.** Madde 5 aksi halde yalnızca teamüldür;
+   teamül, en yorgun olunan gece atlanır. Ayrıca repo kamuya açık: korunan bir
+   varsayılan dal, yeşil CI ve doğrusal geçmiş, dışarıdan bakan tarafın kodu
+   okumadan önce gördüğü şeydir.
+   - **Require status checks to pass** — CI işi ada göre zorunlu kılınır.
+     Bu yüzden iş adı (`ci`) sabittir: ad değişirse beklenen kontrol hiç gelmez
+     ve birleşme kilitlenir.
+   - **Require pull request açılmaz.** PR akışı yok. Fast-forward birleşmede
+     commit SHA'sı değişmediği için dalda alınan yeşil kontrol `main`'e taşınır
+     ve push kabul edilir. PR zorunluluğu, kendi kendini onaylayan boş PR'lar
+     üretmekten başka bir şey yapmaz.
+   - **Include administrators açık.** Kapalıysa kural yalnızca görüntüdür.
+   - **Force push ve dal silme `main`'de kapalı.**
+   - CI workflow'una `paths-ignore` **eklenmez.** Zorunlu kontrolün hiç
+     çalışmadığı bir commit, kalıcı olarak birleştirilemez hale gelir.
+   - **Kaçış yolu.** CI'ı projeyle ilgisiz bir sebep bozduğunda (action sürümü,
+     kayıt sunucusu) koruma geçici olarak kapatılabilir; kapatma `STATE.md`'ye
+     açık kalem olarak yazılır ve aynı oturumda kapanır. Yazılmayan kapatma
+     kalıcı olur.
+   - **Sıra:** koruma, dal `main`'e birleştikten ve CI `main` üzerinde bir kez
+     yeşil çalıştıktan sonra açılır. Önce açılırsa, korumayı mümkün kılan
+     birleşmenin kendisi bloke olur.
+
+**Kabul edilen maliyet:** kısa ömürlü dal, yarım kalmış işin `main`'e inme
+riskini artırır. Karşılığı 5. maddedir; o kurulana kadar karşılığı, birleşmeden
+önce iki test paketinin elle çalıştırılmasıdır.
+*Bulgu (37) Opus'un taramasından; kural Opus, karar Poi.*
+
 ---
 
 ## Açık — karara bağlanmadı

@@ -98,3 +98,23 @@ saha turu ve eczane ilişkileri, oda portalı verisi, mevzuat teyitleri (A4),
 depo temsilcisi teması, alan adı ve hesap açılışları, ticari kararlar.
 
 Bunların çıktısı `STATE.md`'ye girer — modeller ancak oradan öğrenir.
+
+---
+
+## 8. Dal stratejisi
+
+`main` varsayılan daldır: dışarıdan bakan her taraf önce onu görür. Bu yüzden
+`main` her zaman güncel ve çalışır durumda tutulur.
+
+- Karar ve süreç dosyaları dalda bekletilmez — kapanış ritüelinde `main`'e iner.
+- Kod dalı tek konuludur, bir oturumu aşmaz, adı `<type>/<konu>`.
+- Birleşme fast-forward veya merge commit'le; **squash yok** (atıflar bozulur).
+- Dal bir oturumdan uzun yaşayacaksa `STATE.md`'de açık kalem olur.
+- CI kurulduktan sonra: dalda yeşil olmayan iş birleşmez.
+
+Gerekçesi D53'te.
+
+- Karar ve süreç dosyaları da kendi kısa ömürlü dalında gider (`docs/<konu>`);
+  `main`'e doğrudan commit edilmez.
+- `main` dal korumalıdır: CI yeşil olmayan commit birleşmez, koruma yöneticiyi
+  de kapsar. Ayrıntı ve kaçış yolu D53 madde 6'da.
