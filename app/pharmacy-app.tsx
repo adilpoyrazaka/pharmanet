@@ -28,10 +28,15 @@ export default function PharmacyApp({english=false}:{english?:boolean}){
   const id=++requestId.current;abort.current?.abort();const controller=new AbortController();abort.current=controller;setLoading(true);setError('');
   const timeout=setTimeout(()=>controller.abort(),12000);
   try{const response=await fetch('/api/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input),signal:controller.signal,cache:'no-store'});if(!response.ok)throw new Error('search');const data=await response.json() as {results:Result[]};if(id===requestId.current)setRecords(data.results);return data.results as Result[];}
-  catch(e){if(id===requestId.current){setRecords([]);setError(t('Sonuçlar yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.','Results could not be loaded. Check your connection and try again.'));}return [];}
+  catch{if(id===requestId.current){setRecords([]);setError(t('Sonuçlar yüklenemedi. Bağlantınızı kontrol edip tekrar deneyin.','Results could not be loaded. Check your connection and try again.'));}return [];}
   finally{clearTimeout(timeout);if(id===requestId.current)setLoading(false);}
  }
  function runSearch(){return search({institution,district,onlyOpen,freshOnly,sort,query,dutyOnly:view==='duty',location});}
+ // Client-only sources (localStorage, URL params) do not exist during SSR,
+ // so they are read after mount. A lazy initializer would run on the server
+ // and cause a hydration mismatch. The real fix is to read the URL params
+ // server-side and pass them as props; that belongs to the prototype pass.
+ // eslint-disable-next-line react-hooks/set-state-in-effect
  useEffect(()=>{try{const saved=localStorage.getItem('medpusula-institution');if(saved&&institutions.includes(saved))setInstitution(saved);}catch{}const params=new URLSearchParams(window.location.search);const shared=params.get('institution');const selectedDistrict=params.get('district');if(shared&&institutions.includes(shared))setInstitution(shared);if(selectedDistrict&&districts.includes(selectedDistrict))setDistrict(selectedDistrict);if(params.get('view')==='duty')setView('duty');
   const sharedId=params.get('pharmacy');if(sharedId){const match=searchPharmacies({institution:shared&&institutions.includes(shared)?shared:'Allianz',district:selectedDistrict&&districts.includes(selectedDistrict)?selectedDistrict:'Balçova'}).find(p=>p.id===sharedId);if(match)setModal({kind:'detail',pharmacy:match});}
   const onInstall=(event:Event)=>{event.preventDefault();setInstall(event as InstallEvent);};const onNetwork=()=>setOffline(!navigator.onLine);onNetwork();window.addEventListener('beforeinstallprompt',onInstall);window.addEventListener('online',onNetwork);window.addEventListener('offline',onNetwork);
